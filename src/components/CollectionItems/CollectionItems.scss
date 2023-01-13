@@ -1,0 +1,16 @@
+@import '../../scss/default.scss';
+
+.collection-items {
+  background-color: $color-black-bg-light;
+  padding: 8px;
+  border-radius: 10px;
+  margin-top: 20px;
+  &__item {
+    width: 32px;
+    height: 32px;
+    background: #1b212c;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 7px;
+  }
+}

@@ -1,0 +1,52 @@
+@import '../../scss/default.scss';
+
+.quantity {
+  &__attributes {
+    height: 26px;
+    line-height: 26px;
+    background: #10151c;
+    border-radius: 10px 10px 0 0;
+    margin-top: 10px;
+    padding: 0 10px;
+    position: relative;
+  }
+  &__setting {
+    @include icon(16px, 'setting.png');
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+  &__input {
+    height: 44px;
+    line-height: 44px;
+    display: flex;
+    background-color: $color-black-bg-light;
+    border-radius: 0 0 10px 10px;
+    input {
+      flex: 1;
+      padding: 0 10px;
+      color: $color-text-highlight;
+      background-color: transparent;
+    }
+  }
+
+  &__footer {
+    padding: 0 10px;
+    margin-top: 10px;
+    position: relative;
+  }
+  &__max {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+
+    @include button(31px, 16px);
+    color: $color-text-highlight;
+    background: #42454a;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+}

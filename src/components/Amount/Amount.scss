@@ -1,0 +1,55 @@
+@import '../../scss/default.scss';
+
+.amount {
+  &__input {
+    height: 44px;
+    line-height: 44px;
+    display: flex;
+    background-color: $color-black-bg-light;
+    border-radius: 10px;
+    margin-top: 10px;
+    input {
+      flex: 1;
+      padding: 0 10px;
+      color: $color-text-highlight;
+      background-color: transparent;
+    }
+  }
+  &__currency {
+    width: 110px;
+    border-left: 1px solid #1b212c;
+    padding-left: 10px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+  &__eth {
+    @include icon(24px, 'eth.png');
+    margin-top: -2px;
+    margin-right: 10px;
+  }
+  &__arrow {
+    @include icon(24px, 'arrow.png');
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  &__footer {
+    padding: 0 10px;
+    margin-top: 10px;
+    position: relative;
+  }
+  &__max {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+
+    @include button(31px, 16px);
+    color: $color-text-highlight;
+    background: #42454a;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,34 @@
+@import '../../scss/default.scss';
+
+.slide-select {
+  display: flex;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+  &__block {
+    width: 12px;
+    height: 12px;
+    background: #42454a;
+    border-radius: 3px;
+    margin-top: 7px;
+    cursor: pointer;
+  }
+  &__line {
+    flex: 1;
+    height: 12px;
+    margin: 0 5px;
+    border-bottom: 3px solid #42454a;
+  }
+  &__drag {
+    @include button(26px, 26px);
+    background: #42454a;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 6.5px;
+    cursor: move;
+    &__icon {
+      @include icon(20px, 'drag.png');
+    }
+  }
+}

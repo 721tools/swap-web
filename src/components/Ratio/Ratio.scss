@@ -1,0 +1,25 @@
+@import '../../scss/default.scss';
+
+.ratio {
+  display: flex;
+  margin-top: 10px;
+  &__rate {
+    color: #bb3f18;
+    font-size: 14px;
+  }
+  &__bar {
+    flex: 1;
+    height: 4px;
+    background: #afdd53;
+    border-radius: 4px;
+    margin: 0 20px;
+    position: relative;
+    margin-top: 8px;
+    &__inner {
+      background-color: #bb3f18;
+      position: absolute;
+      height: 4px;
+      border-radius: 4px;
+    }
+  }
+}

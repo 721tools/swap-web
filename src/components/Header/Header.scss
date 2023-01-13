@@ -1,0 +1,90 @@
+@import '../../scss/default.scss';
+
+.header {
+  height: 40px;
+  line-height: 40px;
+  padding: 16px 44px;
+  position: relative;
+  border-bottom: 1px solid $color-black-bg-dark;
+
+  &__left {
+    vertical-align: middle;
+    font-size: 0;
+    position: absolute;
+    left: 44px;
+  }
+  &__right {
+    position: absolute;
+    right: 44px;
+    font-size: 0;
+  }
+  &__logo {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    background-color: $color-blue;
+    border-radius: 40px;
+    display: inline-block;
+  }
+  &__title {
+    color: $color-text-highlight;
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 20px;
+    vertical-align: middle;
+    margin-right: 70px;
+  }
+  &__link {
+    font-size: $font-size-default;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 42px;
+  }
+
+  &__icon {
+    @include icon(24px, 'eth.png');
+    margin-top: -2px;
+    &__bell {
+      @include icon(24px, 'bell.png');
+    }
+  }
+  &__balance {
+    font-size: $font-size-default;
+    display: inline-block;
+    height: 44px;
+    line-height: 44px;
+    background-color: $color-black-bg-dark;
+    border-radius: 10px;
+    padding: 0 10px;
+    vertical-align: middle;
+  }
+  &__address {
+    font-size: $font-size-default;
+    display: inline-block;
+    margin-left: 16px;
+    background-color: #7e8597;
+    color: #fff;
+    height: 37px;
+    line-height: 37px;
+    border-radius: 8px;
+    padding: 0 10px;
+  }
+  &__connect {
+    display: inline-block;
+    color: $color-text-highlight;
+    font-size: 14px;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+  }
+  &__notifications {
+    width: 44px;
+    height: 44px;
+    display: inline-block;
+    text-align: center;
+    background-color: $color-black-bg-dark;
+    border-radius: 10px;
+    margin-left: 18px;
+    vertical-align: middle;
+  }
+}

@@ -1,0 +1,80 @@
+@import '../../scss/default.scss';
+
+.listing {
+  display: flex;
+  margin-top: 40px;
+  &__column {
+    flex: 1;
+  }
+  &__title {
+    font-weight: 500;
+    font-size: 16px;
+    color: $color-text-highlight;
+  }
+  &__list {
+    height: 205px;
+    overflow: scroll;
+  }
+}
+
+.listing-item {
+  display: flex;
+  height: 26px;
+  line-height: 26px;
+  padding-right: 40px;
+  margin-bottom: 8px;
+  &:hover {
+    .listing-item__add {
+      display: block;
+    }
+  }
+  &__column {
+    flex: 1;
+  }
+  &__price {
+    flex: 1;
+    color: #bb3f18;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    &.sale {
+      color: #afdd53;
+    }
+  }
+  &__time {
+    width: 70px;
+  }
+  &__picture {
+    width: 26px;
+    img {
+      width: 26px;
+    }
+  }
+  &__icon {
+    @include icon(14px, 'x2y2.png');
+    margin-left: 10px;
+    vertical-align: middle;
+    margin-top: -2px;
+  }
+  &__seller {
+    position: relative;
+  }
+  &__add {
+    background: #2e1d83;
+    color: $color-text-highlight;
+    border: 1px solid #6447f2;
+    border-radius: 5px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+    display: none;
+    font-weight: 600;
+    font-size: 12px;
+  }
+}

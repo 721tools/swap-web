@@ -1,0 +1,109 @@
+@import '../../scss/default.scss';
+
+.orders {
+  margin-top: 40px;
+  &__header {
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+  }
+  &__title {
+    color: $color-text-highlight;
+  }
+  &__column {
+    flex: 1;
+    padding-left: 20px;
+  }
+  &__filter {
+    background: #1b212c;
+    border-radius: 5px;
+    height: 28px;
+    line-height: 28px;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 12px;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      @include icon(14px, 'arrow.png');
+      margin-left: 8px;
+    }
+  }
+}
+
+.orders-item {
+  display: flex;
+  height: 34px;
+  margin-top: 20px;
+  &__success {
+    text-align: center;
+    &__icon {
+      @include icon(18px, 'success.png');
+      background-size: 18px 13px;
+      background-repeat: no-repeat;
+    }
+  }
+  &__type {
+    padding: 0 40px;
+    line-height: 34px;
+    color: $color-text-highlight;
+  }
+  &__desc {
+    font-size: 10px;
+  }
+  &__picture {
+    width: 240px;
+    img {
+      width: 26px;
+      height: 26px;
+      margin-left: -13px;
+      vertical-align: middle;
+      &:nth-child(1) {
+        margin-left: 0;
+      }
+    }
+  }
+  &__quantity {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    display: inline-block;
+    margin-left: -13px;
+    color: $color-text-highlight;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+    text-align: center;
+    
+    vertical-align: middle;
+    border-radius: 4px;
+  }
+  &__info {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: middle;
+  }
+  &__id {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  &__name {
+    line-height: 14px;
+  }
+  &__amount {
+    flex: 1;
+    line-height: 34px;color: $color-text-highlight;
+    font-weight: 500;
+  }
+  &__market {
+    @include icon(14px, 'opensea.png');
+  }
+  &__time {
+    text-align: right;
+    font-size: 12px;
+  }
+  &__count {
+    width: 100px;
+    text-align: left;
+    line-height: 34px;
+  }
+}

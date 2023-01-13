@@ -1,0 +1,31 @@
+$color-black-bg: #10151c;
+$color-black-bg-dark: #0c0c0c;
+$color-black-bg-light: #141a25;
+
+$color-text: #7e8597;
+$color-text-highlight: #ffffff;
+
+$color-blue: #6447f2;
+
+$font-size-default: 14px;
+
+$index-mask: 201;
+$index-pop: 101;
+
+@mixin icon($width, $name) {
+  width: $width;
+  height: $width;
+  display: inline-block;
+  vertical-align: middle;
+  background-size: $width;
+  background-image: url(../../src/assets/icons/#{$name});
+}
+
+@mixin button($width, $height) {
+  width: $width;
+  height: $height;
+  text-align: center;
+  line-height: $height;
+  user-select: none;
+  cursor: pointer;
+}

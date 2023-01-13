@@ -1,0 +1,84 @@
+@import '../../scss/default.scss';
+
+.process {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: $color-black-bg;
+  z-index: $index-mask + 1;
+  &__con {
+    width: 387px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+  &__step {
+    padding: 20px 0;
+    border-top: 1px solid #1b212c;
+    &:nth-last-child(1) {
+      border-bottom: 1px solid #1b212c;
+    }
+    &.hide {
+      div {
+        display: none;
+      }
+      .process__title,
+      .process__subtitle {
+        display: block;
+      }
+    }
+  }
+  &__title {
+    font-weight: 700;
+    font-size: 18px;
+    color: $color-text-highlight;
+  }
+  &__icon {
+    @include icon(90px, 'permission.png');
+    margin-top: 20px;
+    &.book {
+      @include icon(90px, 'book.png');
+    }
+  }
+  &__description {
+    color: $color-text-highlight;
+    margin-top: 10px;
+  }
+  &__button {
+    margin-top: 30px;
+    width: 387px;
+    height: 49px;
+    line-height: 49px;
+    text-align: center;
+
+    color: $color-text-highlight;
+    font-weight: 700;
+    border-radius: 10px;
+    background-color: $color-blue;
+    cursor: pointer;
+    user-select: none;
+    &.disable {
+      background-color: $color-black-bg-light;
+    }
+  }
+  &__tip {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  &__attribute {
+    margin-top: 10px;
+    &__title {
+      font-weight: 700;
+    }
+  }
+  &__close {
+    @include icon(30px, 'close.png');
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,51 @@
+@import '../../scss/default.scss';
+
+.collection {
+  // flex: 1;
+  width: 774px;
+  &__info {
+    display: flex;
+    
+    &__right {
+      flex: 1;
+      text-align: right;
+    }
+    &__item {
+      display: inline-block;
+      margin-left: 30px;
+    }
+    &__val {
+      color: $color-text-highlight;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+  &__avatar {
+    margin-right: 30px;
+    img {
+      width: 50px;
+    }
+  }
+  &__name {
+    font-weight: 500;
+    font-size: 18px;
+    color: $color-text-highlight;
+  }
+  &__markets {
+    a {
+      margin-right: 6px;
+    }
+  }
+  &__opensea {
+    @include icon(20px, 'opensea.png');
+  }
+  &__looksrare {
+    @include icon(20px, 'looksrare.png');
+  }
+  &__x2y2 {
+    @include icon(20px, 'x2y2.png');
+  }
+  &__etherscan {
+    @include icon(20px, 'etherscan.png');
+  }
+}

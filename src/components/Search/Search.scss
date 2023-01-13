@@ -1,0 +1,26 @@
+@import '../../scss/default.scss';
+
+.search {
+  width: 367px;
+  height: 44px;
+  margin: 0 auto;
+  position: relative;
+  background-color: $color-black-bg-dark;
+  padding: 0 10px;
+  border-radius: 10px;
+  display: flex;
+  z-index: $index-mask + 1;
+  &__input {
+    height: 44px;
+    line-height: 44px;
+    background-color: transparent;
+    color: $color-text-highlight;
+
+    flex: 1;
+  }
+  &__icon {
+    @include icon(24px, 'search.png');
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+}

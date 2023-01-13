@@ -1,0 +1,110 @@
+@import '../../scss/default.scss';
+
+.swap {
+  width: 427px;
+  border-radius: 30px;
+  background-color: $color-black-bg-light;
+  margin: 0 auto;
+
+  &__header {
+    padding: 20px 30px;
+  }
+  &__cate {
+    display: inline-block;
+    margin-right: 24px;
+    margin-left: 10px;
+    &.active {
+      color: $color-text-highlight;
+    }
+  }
+
+  &__collection {
+    padding: 0 30px;
+    padding-bottom: 20px;
+    display: flex;
+  }
+  &__pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    background-color: #282c33;
+    img {
+      width: 100%;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    margin-left: 16px;
+    position: relative;
+  }
+
+  &__name {
+    height: 16px;
+    line-height: 16px;
+    margin-top: 8px;
+    &.empty {
+      max-width: 150px;
+      background-color: #282c33;
+    }
+  }
+  &__detail {
+    margin-top: 7px;
+    height: 14px;
+    line-height: 14px;
+    &.empty {
+      max-width: 150px;
+      background-color: #282c33;
+    }
+  }
+  &__change {
+    width: 30px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+  }
+  &__icon {
+    @include icon(24px, 'change.png');
+  }
+  &__select {
+    @include button(175px, 37px);
+    border-radius: 37px;
+    position: absolute;
+    border: 6px solid rgba(100, 71, 242, 0.2);
+    border-radius: 48px;
+    color: $color-text-highlight;
+    font-weight: 700;
+    font-size: 14px;
+
+    left: 50px;
+    top: 0;
+    &__inner {
+      border-radius: 37px;
+      background-color: $color-blue;
+    }
+  }
+  &__actions {
+    background: #1b212c;
+    border-radius: 30px;
+    padding: 20px;
+  }
+  &__action {
+    color: $color-text-highlight;
+    font-weight: 600;
+    padding-left: 10px;
+    &.margin-top {
+      margin-top: 20px;
+    }
+  }
+  &__button {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    background-color: $color-black-bg-light;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+}

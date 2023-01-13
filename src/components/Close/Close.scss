@@ -1,0 +1,9 @@
+@import '../../scss/default.scss';
+
+.close {
+  @include icon(30px, 'close.png');
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  cursor: pointer;
+}

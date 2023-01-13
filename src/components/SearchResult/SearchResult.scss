@@ -1,0 +1,71 @@
+@import '../../scss/default.scss';
+
+.search-result {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: $color-black-bg;
+  z-index: $index-mask;
+  display: flex;
+  flex-direction: column;
+  &__list {
+    margin-top: 60px;
+    // height: 100%;
+    flex: 1;
+    overflow-y: scroll;
+  }
+  &__cate {
+    height: 26px;
+    padding: 12px 0;
+    line-height: 26px;
+    cursor: pointer;
+  }
+  &__item {
+    height: 26px;
+    padding: 12px 0;
+    line-height: 26px;
+    cursor: pointer;
+    &:hover {
+      background-color: #1b212c;
+    }
+  }
+  &__inner {
+    width: 540px;
+    margin: 0 auto;
+    display: flex;
+  }
+  &__picture {
+    img {
+      width: 26px;
+    }
+  }
+  &__title {
+    margin-left: 10px;
+    color: $color-text-highlight;
+    font-weight: 700;
+    font-size: 14px;
+    width: 185px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 20px;
+  }
+  &__price {
+    width: 110px;
+    color: $color-text-highlight;
+  }
+  &__trend {
+    flex: 1;
+    color: #bb3f18;
+  }
+  &__chart {
+    width: 80px;
+    text-align: right;
+  }
+  &__loading {
+    text-align: center;
+    padding-top: 140px;
+  }
+}

@@ -1,0 +1,44 @@
+@import './scss/default.scss';
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  // font-family: PingFangSC-Regular, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+
+  color: $color-text;
+  background-color: $color-black-bg;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+input,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  padding: 0 20px;
+}
+
+a {
+  user-select: none;
+  color: $color-text;
+  text-decoration: none;
+}
+
+input {
+  outline: none;
+  border: none;
+}
