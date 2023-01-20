@@ -1,12 +1,12 @@
 import SlideSelect from '../SlideSelect/SlideSelect'
 import './Quantity.scss'
 
-export default function Quantity() {
+export default function Quantity({ onAttributesClick }) {
   return (
     <div className="quatantity">
       <div className="quantity__attributes">
         Any Attribuites
-        <span className="quantity__setting"></span>
+        <span className="quantity__setting" onClick={onAttributesClick}></span>
       </div>
       <div className="quantity__input">
         <input placeholder="0"></input>

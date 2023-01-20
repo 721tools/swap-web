@@ -1,20 +1,25 @@
 import classNames from 'classnames'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { request } from '../../common/request'
 import { setMoreInfo } from '../../reducers/collectionSlice'
 import Amount from '../Amount/Amount'
+import Attributes from '../Attributes/Attributes'
 import CollectionItems from '../CollectionItems/CollectionItems'
 import Quantity from '../Quantity/Quantity'
 import './Swap.scss'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
+  const [showAttributes, setShowAttributes] = useState(false)
   const { more } = useSelector((state) => state.collection)
 
   useEffect(() => {
     async function fetchCollectionInfo() {
-      const res = await request(`/api/collections/${slug}`)
+      const res = await request({
+        path: `/api/collections/${slug}`,
+        uesSessionStorage: true
+      })
       dispatch(setMoreInfo(res))
     }
     slug && fetchCollectionInfo()
@@ -56,12 +61,19 @@ export default function Swap({ slug }) {
         <Amount></Amount>
 
         <div className="swap__action margin-top">Quantity</div>
-        <Quantity></Quantity>
+        <Quantity onAttributesClick={() => setShowAttributes(true)}></Quantity>
 
         <CollectionItems></CollectionItems>
 
         <div className="swap__button">Sweep Buy</div>
       </div>
+
+      {showAttributes && (
+        <Attributes
+          traits={more.traits}
+          onClose={() => setShowAttributes(false)}
+        ></Attributes>
+      )}
     </div>
   )
 }

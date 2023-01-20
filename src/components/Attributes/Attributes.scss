@@ -1,0 +1,81 @@
+@import '../../scss/default.scss';
+
+.attributes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: $color-black-bg-light;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    line-height: 24px;
+    padding: 30px 25px;
+    color: $color-text-highlight;
+  }
+  &__back {
+    @include icon(24px, 'back.png');
+    margin-right: 20px;
+    vertical-align: middle;
+    margin-top: -2px;
+    cursor: pointer;
+  }
+  &__key {
+    padding: 18px 30px;
+    line-height: 24px;
+    position: relative;
+    color: $color-text-highlight;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  &__arrow {
+    @include icon(24px, 'arrow-white.png');
+    position: absolute;
+    right: 30px;
+    top: 18px;
+  }
+  &__traits {
+    flex: 1;
+    overflow: scroll;
+    background-color: $color-black-bg;
+  }
+  &__val {
+    padding: 18px 30px;
+    line-height: 24px;
+    color: $color-text-highlight;
+    position: relative;
+  }
+  &__check {
+    @include icon(24px, 'check.png');
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 15px;
+    cursor: pointer;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    &.checked {
+      @include icon(24px, 'checked.png');
+    }
+  }
+  &__count {
+    position: absolute;
+    right: 30px;
+    top: 18px;
+    color: $color-text;
+  }
+  &__confirm {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: $color-blue;
+    color: $color-text-highlight;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 30px;
+    margin-bottom: 24px;
+  }
+}

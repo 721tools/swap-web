@@ -5,7 +5,8 @@
   border-radius: 30px;
   background-color: $color-black-bg-light;
   margin: 0 auto;
-
+  position: relative;
+  overflow: hidden;
   &__header {
     padding: 20px 30px;
   }

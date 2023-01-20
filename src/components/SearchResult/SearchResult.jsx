@@ -1,17 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useDebounce } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { Chart } from '@antv/g2'
 import { request } from '../../common/request'
 import './SearchResult.scss'
 import Close from '../Close/Close'
 import { toggleSearch } from '../../reducers/searchSlice'
 import Loading from '../Loading/Loading'
 import { setCollection } from '../../reducers/collectionSlice'
-import { useNavigate } from 'react-router-dom'
+import Area from '../Area/Area'
 
 // const POPULAR_LIST_STORAGE_KEY = 'POPULAR_LIST_STORAGE_KEY'
 
 function Item({ info, onClick }) {
+  const [detail, setDetail] = useState({})
+  const chartRef = useRef()
+
+  useEffect(() => {
+    async function fetchCollectionInfo() {
+      try {
+        const res = await request({
+          path: `/api/collections/${info.slug}`,
+          uesSessionStorage: true
+        })
+        setDetail(res)
+      } catch (e) {}
+    }
+    info.slug && fetchCollectionInfo()
+  }, [])
+
   return (
     <div onClick={onClick} className="search-result__item">
       <div className="search-result__inner">
@@ -21,7 +39,9 @@ function Item({ info, onClick }) {
         <div className="search-result__title">{info.name}</div>
         <div className="search-result__price">{info.floor_price}</div>
         <div className="search-result__trend">+43%</div>
-        <div className="search-result__chart">------</div>
+        <div className="search-result__chart">
+          <Area></Area>
+        </div>
       </div>
     </div>
   )
@@ -43,8 +63,12 @@ export default function SearchResult() {
         page: 1,
         limit: 10
       }
-      const res = await request('/api/collections', params)
-      console.log(res)
+      const res = await request({
+        path: '/api/collections',
+        data: params,
+        uesSessionStorage: true
+      })
+
       setPopularList(res.collections)
       return res.collections
     } catch (e) {}
@@ -78,7 +102,7 @@ export default function SearchResult() {
         } else {
           params.name = input
         }
-        const res = await request('/api/collections', params)
+        const res = await request({ path: '/api/collections', data: params })
         setResultList(res.collections)
       } else {
         setResultList([])
