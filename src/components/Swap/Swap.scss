@@ -63,6 +63,7 @@
     height: 50px;
     line-height: 50px;
     text-align: center;
+    cursor: pointer;
   }
   &__icon {
     @include icon(24px, 'change.png');

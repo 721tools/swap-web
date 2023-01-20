@@ -57,6 +57,8 @@
     background-position: 3px 3px;
     &.checked {
       @include icon(24px, 'checked.png');
+      background-size: 24px;
+      background-position: 0px 0px;
     }
   }
   &__count {

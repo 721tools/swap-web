@@ -1,5 +1,6 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import listener from '../../common/listener'
 import { inputSearch, toggleSearch } from '../../reducers/searchSlice'
 
 import './Search.scss'
@@ -27,6 +28,15 @@ export default function Search() {
     }
   }
 
+  useEffect(() => {
+    function focus() {
+      inputRef.current.focus()
+    }
+    listener.register('search', 'focus', focus)
+    return () => {
+      listener.remove('search', 'focus', 'focus')
+    }
+  }, [])
   return (
     <div className="search">
       <span className="search__icon"></span>

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import listener from '../../common/listener'
 import { request } from '../../common/request'
 import { setMoreInfo } from '../../reducers/collectionSlice'
 import Amount from '../Amount/Amount'
@@ -13,6 +14,7 @@ export default function Swap({ slug }) {
   const dispatch = useDispatch()
   const [showAttributes, setShowAttributes] = useState(false)
   const { more } = useSelector((state) => state.collection)
+  const [attributes, setAttributes] = useState({})
 
   useEffect(() => {
     async function fetchCollectionInfo() {
@@ -24,6 +26,15 @@ export default function Swap({ slug }) {
     }
     slug && fetchCollectionInfo()
   }, [slug])
+
+  function handleSetAttributes(selected) {
+    setAttributes(selected)
+  }
+
+  function handleFocusSearch() {
+    console.log(1)
+    listener.fire('search', 'focus')
+  }
 
   return (
     <div className="swap">
@@ -48,11 +59,13 @@ export default function Swap({ slug }) {
           ></div>
           {!more && (
             <div className="swap__select">
-              <div className="swap__select__inner">Select collection</div>
+              <div onClick={handleFocusSearch} className="swap__select__inner">
+                Select collection
+              </div>
             </div>
           )}
         </div>
-        <div className="swap__change">
+        <div onClick={handleFocusSearch} className="swap__change">
           <span className="swap__icon"></span>
         </div>
       </div>
@@ -70,8 +83,10 @@ export default function Swap({ slug }) {
 
       {showAttributes && (
         <Attributes
+          onConfirm={handleSetAttributes}
           traits={more.traits}
           onClose={() => setShowAttributes(false)}
+          selectedAttributes={attributes}
         ></Attributes>
       )}
     </div>
