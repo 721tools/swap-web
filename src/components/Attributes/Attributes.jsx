@@ -1,7 +1,8 @@
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Attributes.scss'
 
+export const JOINT_MARK = '--+--'
 export default function Attributes({
   traits,
   onClose,
@@ -11,11 +12,18 @@ export default function Attributes({
   const [selected, setSelected] = useState(selectedAttributes)
   const [showTrait, setShowTrait] = useState({})
 
+  useEffect(() => {
+    setShowTrait({
+      ...showTrait,
+      [Object.keys(traits)[0]]: true
+    })
+  }, [])
+
   function handleSelect(trait, val) {
     // if (selected[`${trait}-${val}`]) {
     setSelected({
       ...selected,
-      [`${trait}-${val}`]: !selected[`${trait}-${val}`]
+      [`${trait}${JOINT_MARK}${val}`]: !selected[`${trait}${JOINT_MARK}${val}`]
     })
     // }
   }
@@ -39,14 +47,18 @@ export default function Attributes({
         ATTRIBUTES
       </div>
       <div className="attributes__traits">
-        {Object.keys(traits).map((key) => (
+        {Object.keys(traits).map((key, index) => (
           <div>
             <div
               onClick={handleShowTrait.bind(this, key)}
               className="attributes__key"
             >
               {key}
-              <span className="attributes__arrow"></span>
+              <span
+                className={classNames('attributes__arrow', {
+                  'to-right': !showTrait[key]
+                })}
+              ></span>
             </div>
             {showTrait[key] && (
               <div className="attributes__vals">
@@ -55,7 +67,7 @@ export default function Attributes({
                     <span
                       onClick={handleSelect.bind(this, key, item)}
                       className={classNames('attributes__check', {
-                        checked: selected[`${key}-${item}`]
+                        checked: selected[`${key}${JOINT_MARK}${item}`]
                       })}
                     ></span>
                     {item}

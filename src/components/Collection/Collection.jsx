@@ -4,6 +4,7 @@ import { request } from '../../common/request'
 import Listing from '../Listing/Listing'
 import Orders from '../Orders/Orders'
 import Ratio from '../Ratio/Ratio'
+import Step from '../Step/Step'
 import './Collection.scss'
 
 export default function Collection() {
@@ -68,7 +69,7 @@ export default function Collection() {
           </div>
         </div>
       </div>
-
+      <Step></Step>
       <Listing key={more.slug} slug={more.slug}></Listing>
       <Ratio></Ratio>
       <Orders></Orders>

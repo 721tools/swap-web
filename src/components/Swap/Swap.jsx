@@ -5,7 +5,7 @@ import listener from '../../common/listener'
 import { request } from '../../common/request'
 import { setMoreInfo } from '../../reducers/collectionSlice'
 import Amount from '../Amount/Amount'
-import Attributes from '../Attributes/Attributes'
+import Attributes, { JOINT_MARK } from '../Attributes/Attributes'
 import CollectionItems from '../CollectionItems/CollectionItems'
 import Quantity from '../Quantity/Quantity'
 import './Swap.scss'
@@ -15,6 +15,21 @@ export default function Swap({ slug }) {
   const [showAttributes, setShowAttributes] = useState(false)
   const { more } = useSelector((state) => state.collection)
   const [attributes, setAttributes] = useState({})
+
+  function parseTraits(attributes) {
+    const res = {}
+    Object.keys(attributes).forEach((item) => {
+      if (attributes[item]) {
+        const [key, val] = item.split(JOINT_MARK)
+        if (res[key]) {
+          res[key].push(val)
+        } else {
+          res[key] = [val]
+        }
+      }
+    })
+    return res
+  }
 
   useEffect(() => {
     async function fetchCollectionInfo() {
@@ -27,12 +42,27 @@ export default function Swap({ slug }) {
     slug && fetchCollectionInfo()
   }, [slug])
 
+  useEffect(() => {
+    console.log(attributes, 2)
+    async function fetchTokens() {
+      const params = {
+        slug,
+        traits: parseTraits(attributes)
+      }
+      const res = await request({
+        path: `/api/smart-buys/tokens`,
+        data: params,
+        method: 'POST'
+      })
+    }
+    fetchTokens()
+  }, [attributes])
+
   function handleSetAttributes(selected) {
     setAttributes(selected)
   }
 
   function handleFocusSearch() {
-    console.log(1)
     listener.fire('search', 'focus')
   }
 
