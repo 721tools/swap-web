@@ -6,8 +6,6 @@ export default function Area() {
   const width = 80
   const height = 30
   useEffect(() => {
-    console.log(canvasRef.current, 1)
-
     const data = [1, 3, 5, 2, 5, 6, 1, 2, 5, 4, 3]
     const widthRatio = Math.floor(80 / data.length)
     const heightRatio = Math.floor(30 / 5 / 2)

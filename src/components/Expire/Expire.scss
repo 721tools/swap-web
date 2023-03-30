@@ -1,0 +1,39 @@
+@import '../../scss/default.scss';
+
+.expire {
+  height: 44px;
+  position: relative;
+  color: $color-text-highlight;
+  display: flex;
+  margin-top: 10px;
+  &__days {
+    height: 44px;
+    line-height: 44px;
+    width: 124px;
+    background-color: $color-black-bg-dark;
+    padding: 0 10px;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+  }
+  &__date {
+    flex: 1;
+    height: 44px;
+    line-height: 44px;
+    background-color: $color-black-bg-dark;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+  &__arrow {
+    @include icon(24px, 'arrow.png');
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  &__calendar {
+    @include icon(24px, 'calendar.png');
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: -2px;
+  }
+}

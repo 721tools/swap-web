@@ -10,8 +10,6 @@ import './Collection.scss'
 export default function Collection() {
   const { info, more } = useSelector((state) => state.collection)
 
-  console.log(more, 'more')
-
   return (
     <div className="collection">
       <div className="collection__info">
@@ -69,7 +67,7 @@ export default function Collection() {
           </div>
         </div>
       </div>
-      <Step></Step>
+      <Step slug={more.slug}></Step>
       <Listing key={more.slug} slug={more.slug}></Listing>
       <Ratio></Ratio>
       <Orders></Orders>

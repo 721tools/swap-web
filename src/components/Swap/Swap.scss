@@ -2,12 +2,13 @@
 
 .swap {
   width: 427px;
-  height: 678px;
-  border-radius: 30px;
-  background-color: $color-black-bg-light;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+  &__inner {
+    border-radius: 30px;
+    background-color: $color-black-bg-light;
+  }
   &__header {
     padding: 20px 30px;
   }
@@ -15,6 +16,7 @@
     display: inline-block;
     margin-right: 24px;
     margin-left: 10px;
+    cursor: pointer;
     &.active {
       color: $color-text-highlight;
     }

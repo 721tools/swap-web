@@ -38,13 +38,14 @@ export default function Listing({ slug }) {
       const res = await request({
         path: `/api/collections/${slug}/events`,
         data: {
-          event_types: 'AUCTION_CREATED',
-          occurred_after: 0
+          event_types: ['AUCTION_CREATED'],
+          // occurred_after: Date.now() - 24 * 60 * 60 * 1000
+          occurred_after: 0,
+          limit: 20
         },
         method: 'POST'
       })
       setListingList(res)
-      console.log(res, 233)
     } catch (e) {}
   }
 
@@ -53,13 +54,12 @@ export default function Listing({ slug }) {
       const res = await request({
         path: `/api/collections/${slug}/events`,
         data: {
-          event_types: 'AUCTION_SUCCESSFUL',
+          event_types: ['AUCTION_SUCCESSFUL'],
           occurred_after: 0
         },
         method: 'POST'
       })
       setSalesList(res)
-      console.log(res, 233)
     } catch (e) {}
   }
 
@@ -81,7 +81,7 @@ export default function Listing({ slug }) {
         <div className="listing__title">Sales</div>
         <div className="listing__list">
           {salesList.map((item) => (
-            <ListingItem key={item.event_timestamp} info={item}></ListingItem>
+            <ListingItem sale key={item.event_timestamp} info={item}></ListingItem>
           ))}
         </div>
       </div>

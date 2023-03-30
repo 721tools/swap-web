@@ -1,10 +1,12 @@
 import './CollectionItems.scss'
 
-export default function CollectionItems() {
+export default function CollectionItems({list}) {
   return (
     <div className="collection-items">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-        <div className="collection-items__item"></div>
+      {list.slice(0, 16).map((item) => (
+        <div key={item.token_id} className="collection-items__item">
+          <img title={`#${item.token_id}`} className="collection-items__img" src={item.image}></img>
+        </div>
       ))}
     </div>
   )

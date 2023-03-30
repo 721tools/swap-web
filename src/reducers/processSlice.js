@@ -10,7 +10,6 @@ export const processSlice = createSlice({
       state.show = true
     },
     hideProcess: (state, action) => {
-      console.log(1)
       state.show = false
     }
   }

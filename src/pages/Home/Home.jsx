@@ -16,7 +16,6 @@ export default function Home() {
   const location = useLocation()
   const params = useParams()
   const isCollection = location.pathname.indexOf('/collection/') > -1
-  console.log(params, location)
   return (
     <div
       className={classNames('home', {
@@ -26,7 +25,7 @@ export default function Home() {
       <Header></Header>
       <div className="home__con">
         {collection.more && <Collection></Collection>}
-        <Swap slug={params.slug}></Swap>
+        <Swap key={params.slug} slug={params.slug}></Swap>
       </div>
       {search.active && <SearchResult></SearchResult>}
       {/* {process.show && (

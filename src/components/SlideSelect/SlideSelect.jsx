@@ -2,16 +2,23 @@ import { useRef } from 'react'
 import { useEffect } from 'react'
 import './SlideSelect.scss'
 
-export default function SlideSelect() {
+export default function SlideSelect({ available = false, value, onChange }) {
   const mouseStatusRef = useRef({
     drag: false,
     startX: 0,
     startY: 0,
     left: 0,
-    currentLeft: 0
+    currentLeft: value * 361
   })
 
   const dragDomRef = useRef()
+
+  useEffect(() => {
+    if (mouseStatusRef.current.drag === false) {
+      mouseStatusRef.current.left = value * 361
+      dragDomRef.current.style.left = value * 361 + 'px'
+    }
+  }, [value])
 
   function getLeft(e) {
     const left =
@@ -30,8 +37,9 @@ export default function SlideSelect() {
 
   function onMouseDown(e) {
     if (
-      e.target.className === 'slide-select__drag' ||
-      e.target.className === 'slide-select__drag__icon'
+      available &&
+      (e.target.className === 'slide-select__drag' ||
+        e.target.className === 'slide-select__drag__icon')
     ) {
       mouseStatusRef.current.drag = true
       mouseStatusRef.current.startX = e.screenX
@@ -41,6 +49,7 @@ export default function SlideSelect() {
     if (mouseStatusRef.current.drag === true) {
       mouseStatusRef.current.currentLeft = getLeft(e)
       dragDomRef.current.style.left = mouseStatusRef.current.currentLeft + 'px'
+      onChange(mouseStatusRef.current.currentLeft / 361)
     }
   }
   function onMouseUp(e) {
