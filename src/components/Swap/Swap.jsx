@@ -118,25 +118,27 @@ export default function Swap({ slug }) {
     [amount]
   )
 
+  function getListTotalCost(list) {
+    let total = 0
+    list.forEach((item) => {
+      total += parseFloat(item.price)
+    })
+    return total
+  }
+
   function handleQuantityChange(quantity) {
     setQuantity(quantity)
     if (quantity >= 0) {
       const selected = cart.available.slice(0, quantity)
       dispatch(setCartSelected(selected))
-      let total = 0
-      selected.forEach((item) => {
-        total += parseFloat(item.price)
-      })
+      const total = getListTotalCost(selected)
       setAmount(total)
     }
   }
 
   function handleListChange(list) {
     setQuantity(list.length)
-    let total = 0
-    list.forEach((item) => {
-      total += parseFloat(item.price)
-    })
+    const total = getListTotalCost(list)
     setAmount(total)
   }
   function handleSetAttributes(selected) {
@@ -151,6 +153,10 @@ export default function Swap({ slug }) {
     if (isSweepBuyLoading) return
     if (cart.selected.length === 0) {
       return
+    }
+    const total = getListTotalCost(cart.selected)
+    if (total > balance?.formatted) {
+      return message.warn('Insufficient balance')
     }
     setIsSweepBuyLoading(true)
     try {
@@ -168,23 +174,20 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-      if (BigNumber.from(res.value) > balance?.formatted) {
-        setIsSweepBuyLoading(false)
-        return message.warn('Insufficient balance')
-      }
+      
       const provider = new ethers.providers.Web3Provider(window.ethereum)
 
       const signer = provider.getSigner()
       const tx = await signer.sendTransaction({
-        value: BigNumber.from(res.value),
+        value: res.value,
         to: res.address,
         data: res.calldata
       })
       setIsSweepBuyLoading(true)
     } catch (error) {
-      // setIsSweepBuyLoading(false)
-      console.log(error)
-      // message.warn(error.data.message)
+      setIsSweepBuyLoading(false)
+      console.log(error.code)
+      message.warn(error.code)
     }
   }
 

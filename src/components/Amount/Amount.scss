@@ -14,6 +14,11 @@
       color: $color-text-highlight;
       background-color: transparent;
     }
+    &.warn {
+      input {
+        color: #ff3333;
+      }
+    }
   }
   &__currency {
     width: 110px;

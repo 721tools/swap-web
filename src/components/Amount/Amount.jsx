@@ -1,9 +1,14 @@
+import classNames from 'classnames'
 import './Amount.scss'
 
 export default function Amount({ value, balance, onChange }) {
   return (
     <div className="amount">
-      <div className="amount__input">
+      <div
+        className={classNames('amount__input', {
+          warn: parseFloat(value) > parseFloat(balance)
+        })}
+      >
         <input
           placeholder="0"
           value={value}
