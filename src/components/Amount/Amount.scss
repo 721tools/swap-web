@@ -22,6 +22,8 @@
     position: relative;
     cursor: pointer;
     user-select: none;
+    text-align: right;
+    padding-right: 15px;
   }
   &__eth {
     @include icon(24px, 'eth.png');

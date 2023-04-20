@@ -12,7 +12,7 @@ export default function Amount({ value, balance, onChange }) {
         <div className="amount__currency">
           <span className="amount__eth"></span>
           ETH
-          <span className="amount__arrow"></span>
+          {/* <span className="amount__arrow"></span> */}
         </div>
       </div>
       <div className="amount__footer">

@@ -48,7 +48,7 @@ export default function Attributes({
       </div>
       <div className="attributes__traits">
         {Object.keys(traits).map((key, index) => (
-          <div>
+          <div key={key}>
             <div
               onClick={handleShowTrait.bind(this, key)}
               className="attributes__key"
@@ -63,7 +63,7 @@ export default function Attributes({
             {showTrait[key] && (
               <div className="attributes__vals">
                 {Object.keys(traits[key]).map((item) => (
-                  <div className="attributes__val">
+                  <div key={item} className="attributes__val">
                     <span
                       onClick={handleSelect.bind(this, key, item)}
                       className={classNames('attributes__check', {

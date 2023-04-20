@@ -34,6 +34,11 @@
       border-color: $color-text transparent transparent transparent;
     }
   }
+  &.white {
+    div {
+      border-color: $color-text-highlight transparent transparent transparent;
+    }
+  }
   &.middle {
     width: 48px;
     height: 48px;

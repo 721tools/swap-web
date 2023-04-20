@@ -14,6 +14,11 @@ export const cartSlice = createSlice({
     setCartSelected: (state, action) => {
       state.selected = action.payload
     },
+    removeCartSelected: (state, action) => {
+      state.selected = state.selected.filter((item) => {
+        return item.token_id !== action.payload.token_id
+      })
+    },
     clearCart: (state, action) => {
       state.items = []
     }
@@ -21,7 +26,11 @@ export const cartSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setCartAvailable, clearCart, setCartSelected } =
-  cartSlice.actions
+export const {
+  setCartAvailable,
+  clearCart,
+  setCartSelected,
+  removeCartSelected
+} = cartSlice.actions
 
 export default cartSlice.reducer

@@ -30,6 +30,7 @@ export default function Quantity({
         </div>
       </div>
       <SlideSelect
+        key={availableQuantity}
         available={availableQuantity > 0}
         value={value / availableQuantity}
         onChange={(percent) =>

@@ -13,9 +13,17 @@
     border-radius: 4px;
     display: inline-block;
     margin: 7px;
+    position: relative;
   }
   &__img {
     width: 32px;
 
+  }
+  &__remove {
+    @include icon(14px, 'remove.png');
+    position: absolute;
+    right: -7px;
+    top: -7px;
+    cursor: pointer;
   }
 }

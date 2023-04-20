@@ -32,10 +32,10 @@ export default function Header() {
         <div className="header__logo"></div>
         <span className="header__title">Kiwiswap</span>
 
-        <a href="" className="header__link">
+        {/* <a href="" className="header__link">
           Collections
         </a>
-        <a className="header__link">portfolios</a>
+        <a className="header__link">portfolios</a> */}
       </div>
       <div className="header__right">
         {isConnected && (

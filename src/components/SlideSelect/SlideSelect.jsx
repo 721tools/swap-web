@@ -2,7 +2,11 @@ import { useRef } from 'react'
 import { useEffect } from 'react'
 import './SlideSelect.scss'
 
-export default function SlideSelect({ available = false, value, onChange }) {
+export default function SlideSelect({
+  available = false,
+  value,
+  onChange
+}) {
   const mouseStatusRef = useRef({
     drag: false,
     startX: 0,
@@ -12,7 +16,6 @@ export default function SlideSelect({ available = false, value, onChange }) {
   })
 
   const dragDomRef = useRef()
-
   useEffect(() => {
     if (mouseStatusRef.current.drag === false) {
       mouseStatusRef.current.left = value * 361

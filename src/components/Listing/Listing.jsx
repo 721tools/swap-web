@@ -73,7 +73,7 @@ export default function Listing({ slug }) {
         <div className="listing__title">Listings</div>
         <div className="listing__list">
           {listingList.map((item) => (
-            <ListingItem key={item.event_timestamp} info={item}></ListingItem>
+            <ListingItem key={`${item.token_id}${item.event_timestamp}`} info={item}></ListingItem>
           ))}
         </div>
       </div>
@@ -81,7 +81,7 @@ export default function Listing({ slug }) {
         <div className="listing__title">Sales</div>
         <div className="listing__list">
           {salesList.map((item) => (
-            <ListingItem sale key={item.event_timestamp} info={item}></ListingItem>
+            <ListingItem sale key={`${item.token_id}${item.event_timestamp}`} info={item}></ListingItem>
           ))}
         </div>
       </div>

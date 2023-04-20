@@ -13,7 +13,10 @@ import CollectionItems from '../CollectionItems/CollectionItems'
 import Expire from '../Expire/Expire'
 import LimitAmount from '../LimitAmount/LimitAmount'
 import Quantity from '../Quantity/Quantity'
+import Loading from '../Loading/Loading'
 import './Swap.scss'
+import { BigNumber, ethers } from 'ethers'
+import { message } from '../Message/Message'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
@@ -27,6 +30,7 @@ export default function Swap({ slug }) {
   const [limitPrice, setLimitPrice] = useState(0)
   const [limitQuantity, setLimitQuantity] = useState(0)
   const [limitExpire, setLimitExpire] = useState(0)
+  const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
 
   const { address } = useAccount()
 
@@ -65,12 +69,7 @@ export default function Swap({ slug }) {
     slug && fetchCollectionInfo()
   }, [slug])
 
-  async function fetchTokens({ balance, attributes, setSelected }) {
-    // const params = {
-    //   balance: 15,
-    //   count: 10,
-    //   traits: parseTraits(attributes)
-    // }
+  async function fetchTokens({ balance, attributes, setSelected = false }) {
     const params = {}
     if (balance) {
       params.balance = balance
@@ -98,7 +97,7 @@ export default function Swap({ slug }) {
       if (balance)
         fetchTokens({
           attributes,
-          balance: amount > 0 ? amount : 6 || balance.formatted
+          balance: amount || balance.formatted
         })
     },
     500,
@@ -119,22 +118,74 @@ export default function Swap({ slug }) {
     [amount]
   )
 
-  // quantity change
-  useDebounce(
-    async () => {
-      if (quantity >= 0)
-        dispatch(setCartSelected(cart.available.slice(0, quantity)))
-    },
-    200,
-    [quantity]
-  )
+  function handleQuantityChange(quantity) {
+    setQuantity(quantity)
+    if (quantity >= 0) {
+      const selected = cart.available.slice(0, quantity)
+      dispatch(setCartSelected(selected))
+      let total = 0
+      selected.forEach((item) => {
+        total += parseFloat(item.price)
+      })
+      setAmount(total)
+    }
+  }
 
+  function handleListChange(list) {
+    setQuantity(list.length)
+    let total = 0
+    list.forEach((item) => {
+      total += parseFloat(item.price)
+    })
+    setAmount(total)
+  }
   function handleSetAttributes(selected) {
     setAttributes(selected)
   }
 
   function handleFocusSearch() {
     listener.fire('search', 'focus')
+  }
+
+  async function handleSweepBuy() {
+    if (isSweepBuyLoading) return
+    if (cart.selected.length === 0) {
+      return
+    }
+    setIsSweepBuyLoading(true)
+    try {
+      const res = await request({
+        path: `/api/orders/sweep`,
+        data: {
+          contract_address: more.contract,
+          tokens: cart.selected.map((item) => {
+            return {
+              token_id: item.token_id,
+              price: item.price,
+              platform: item.from
+            }
+          })
+        },
+        method: 'POST'
+      })
+      if (BigNumber.from(res.value) > balance?.formatted) {
+        setIsSweepBuyLoading(false)
+        return message.warn('Insufficient balance')
+      }
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      const signer = provider.getSigner()
+      const tx = await signer.sendTransaction({
+        value: BigNumber.from(res.value),
+        to: res.address,
+        data: res.calldata
+      })
+      setIsSweepBuyLoading(true)
+    } catch (error) {
+      // setIsSweepBuyLoading(false)
+      console.log(error)
+      // message.warn(error.data.message)
+    }
   }
 
   async function limitBuy() {
@@ -150,7 +201,6 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-      console.log(limitBuyParams)
     } catch (error) {}
   }
 
@@ -220,13 +270,24 @@ export default function Swap({ slug }) {
             <Quantity
               availableQuantity={cart.available.length}
               value={quantity}
-              onChange={setQuantity}
+              onChange={handleQuantityChange}
               onAttributesClick={() => setShowAttributes(true)}
             ></Quantity>
 
-            <CollectionItems list={cart.selected}></CollectionItems>
+            <CollectionItems
+              onListChange={handleListChange}
+              list={cart.selected}
+            ></CollectionItems>
 
-            <div className="swap__button">Sweep Buy</div>
+            <div
+              className={classNames('swap__button', {
+                disabled: cart.selected.length === 0
+              })}
+              onClick={handleSweepBuy}
+            >
+              {isSweepBuyLoading && <Loading color="white"></Loading>}
+              Sweep Buy
+            </div>
           </div>
         )}
         {cate === 'limit' && (
@@ -247,7 +308,12 @@ export default function Swap({ slug }) {
             <div className="swap__action margin-top">Expire</div>
             <Expire onChange={setLimitExpire}></Expire>
 
-            <div className="swap__button" onClick={limitBuy}>
+            <div
+              className={classNames('swap__button', {
+                disabled: cart.selected.length === 0
+              })}
+              onClick={limitBuy}
+            >
               Limit Buy
             </div>
           </div>
