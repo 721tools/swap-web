@@ -107,7 +107,8 @@ export default function Swap({ slug }) {
   // amount change
   useDebounce(
     async () => {
-      if (amount > 0)
+      if (amount > 0 && amount <= balance?.formatted)
+      
         fetchTokens({
           attributes,
           balance: amount,
