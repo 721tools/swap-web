@@ -20,7 +20,6 @@ import { showProcess } from '../../reducers/processSlice'
 import { allowance, approve } from '../../common/weth'
 import { useSigner } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
-import useSweep from '../../hooks/useSweep'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
