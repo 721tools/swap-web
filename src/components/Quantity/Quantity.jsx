@@ -5,7 +5,8 @@ export default function Quantity({
   value,
   availableQuantity,
   onAttributesClick,
-  onChange
+  onChange,
+  slide = true
 }) {
   return (
     <div className="quatantity">
@@ -29,14 +30,16 @@ export default function Quantity({
           MAX
         </div>
       </div>
-      <SlideSelect
-        key={availableQuantity}
-        available={availableQuantity > 0}
-        value={value / availableQuantity}
-        onChange={(percent) =>
-          onChange(Math.floor(percent * availableQuantity))
-        }
-      ></SlideSelect>
+      {slide && (
+        <SlideSelect
+          key={availableQuantity}
+          available={availableQuantity > 0}
+          value={value / availableQuantity}
+          onChange={(percent) =>
+            onChange(Math.floor(percent * availableQuantity))
+          }
+        ></SlideSelect>
+      )}
     </div>
   )
 }

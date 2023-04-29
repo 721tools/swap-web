@@ -1,6 +1,6 @@
 import './LimitAmount.scss'
 
-export default function LimitAmount({ value, balance, onChange }) {
+export default function LimitAmount({ value, balance, onChange, floorPrice }) {
   return (
     <div className="limit-amount">
       <div className="limit-amount__input">
@@ -12,11 +12,11 @@ export default function LimitAmount({ value, balance, onChange }) {
         <div className="limit-amount__currency">
           <span className="limit-amount__eth"></span>
           WETH
-          <span className="limit-amount__arrow"></span>
+          {/* <span className="limit-amount__arrow"></span> */}
         </div>
       </div>
       <div className="limit-amount__footer">
-        <div className="limit-amount__balance">Floor: {balance}</div>
+        <div className="limit-amount__balance">Floor: {floorPrice}</div>
         {/* <div className="limit-amount__max" onClick={() => onChange(balance)}>
           MAX
         </div> */}

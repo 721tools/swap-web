@@ -15,8 +15,10 @@ import LimitAmount from '../LimitAmount/LimitAmount'
 import Quantity from '../Quantity/Quantity'
 import Loading from '../Loading/Loading'
 import './Swap.scss'
-import { BigNumber, ethers } from 'ethers'
 import { message } from '../Message/Message'
+import { showProcess } from '../../reducers/processSlice'
+import { allowance, approve } from '../../common/weth'
+import { provider } from '../../wagmiClient'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
@@ -31,7 +33,7 @@ export default function Swap({ slug }) {
   const [limitQuantity, setLimitQuantity] = useState(0)
   const [limitExpire, setLimitExpire] = useState(0)
   const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
-
+  const [isLimitBuyLoading, setIsLimitBuyLoading] = useState(false)
   const { address } = useAccount()
 
   const {
@@ -108,7 +110,6 @@ export default function Swap({ slug }) {
   useDebounce(
     async () => {
       if (amount > 0 && amount <= balance?.formatted)
-      
         fetchTokens({
           attributes,
           balance: amount,
@@ -175,8 +176,6 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-      
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
 
       const signer = provider.getSigner()
       const tx = await signer.sendTransaction({
@@ -185,6 +184,7 @@ export default function Swap({ slug }) {
         data: res.calldata
       })
       setIsSweepBuyLoading(true)
+      // TODO: tx success
     } catch (error) {
       setIsSweepBuyLoading(false)
       console.log(error.code)
@@ -193,7 +193,23 @@ export default function Swap({ slug }) {
   }
 
   async function limitBuy() {
+    if (isLimitBuyLoading) return
+    if (limitPrice <= 0) {
+      return message.warn('Please enter the price')
+    }
+
+    if (limitQuantity <= 0) {
+      return message.warn('Please enter the quantity')
+    }
+    setIsLimitBuyLoading(true)
+
     try {
+      const _allowance = await allowance(address)
+
+      if (_allowance < limitPrice * limitQuantity) {
+        await approve(1)
+      }
+
       const limitBuyParams = await request({
         path: `/api/orders/params`,
         data: {
@@ -205,7 +221,13 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-    } catch (error) {}
+      
+      setIsLimitBuyLoading(false)
+      // TODO: limit buy
+    } catch (error) {
+      setIsLimitBuyLoading(false)
+      message.error(error.error)
+    }
   }
 
   return (
@@ -299,6 +321,7 @@ export default function Swap({ slug }) {
             <div className="swap__action">Limit price</div>
             <LimitAmount
               // balance={balance ? parseFloat(balance?.formatted).toFixed(3) : 0}
+              floorPrice={more?.floor_price}
               value={limitPrice}
               onChange={setLimitPrice}
             ></LimitAmount>
@@ -306,18 +329,20 @@ export default function Swap({ slug }) {
             <Quantity
               availableQuantity={cart.available.length}
               value={limitQuantity}
-              onChange={setLimitQuantity}
+              onChange={(quantity) => setLimitQuantity(quantity)}
               onAttributesClick={() => setShowAttributes(true)}
+              slide={false}
             ></Quantity>
             <div className="swap__action margin-top">Expire</div>
             <Expire onChange={setLimitExpire}></Expire>
 
             <div
               className={classNames('swap__button', {
-                disabled: cart.selected.length === 0
+                disabled: !(limitQuantity > 0 && limitPrice > 0)
               })}
               onClick={limitBuy}
             >
+              {isLimitBuyLoading && <Loading color="white"></Loading>}
               Limit Buy
             </div>
           </div>
