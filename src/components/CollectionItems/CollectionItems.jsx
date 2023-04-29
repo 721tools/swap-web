@@ -18,7 +18,7 @@ export default function CollectionItems({ list, onListChange }) {
           <img
             title={`#${item.token_id}`}
             className="collection-items__img"
-            src={item.image}
+            src={item.image || item.image_url}
           ></img>
           <span
             onClick={handleRemove.bind(this, item.token_id)}

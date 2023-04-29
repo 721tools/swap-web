@@ -14,6 +14,9 @@ export const cartSlice = createSlice({
     setCartSelected: (state, action) => {
       state.selected = action.payload
     },
+    addCartSelected: (state, action) => {
+      state.selected.push(action.payload)
+    },  
     removeCartSelected: (state, action) => {
       state.selected = state.selected.filter((item) => {
         return item.token_id !== action.payload.token_id
@@ -30,6 +33,7 @@ export const {
   setCartAvailable,
   clearCart,
   setCartSelected,
+  addCartSelected,
   removeCartSelected
 } = cartSlice.actions
 

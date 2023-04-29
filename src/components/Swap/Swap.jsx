@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useDebounce } from 'react-use'
 import { useAccount, useBalance } from 'wagmi'
@@ -18,7 +18,9 @@ import './Swap.scss'
 import { message } from '../Message/Message'
 import { showProcess } from '../../reducers/processSlice'
 import { allowance, approve } from '../../common/weth'
-import { provider } from '../../wagmiClient'
+import { useSigner } from 'wagmi'
+import getListTotalCost from '../../common/getListTotalCost'
+import useSweep from '../../hooks/useSweep'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
@@ -35,7 +37,7 @@ export default function Swap({ slug }) {
   const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
   const [isLimitBuyLoading, setIsLimitBuyLoading] = useState(false)
   const { address } = useAccount()
-
+  
   const {
     data: balance,
     isBalanceError,
@@ -44,6 +46,8 @@ export default function Swap({ slug }) {
     address,
     watch: true
   })
+  
+  const { data: signer, isError, isLoading } = useSigner()
 
   function parseTraits(attributes) {
     const res = {}
@@ -70,6 +74,24 @@ export default function Swap({ slug }) {
     }
     slug && fetchCollectionInfo()
   }, [slug])
+
+  function updateQuantity(quanity) {
+    setQuantity(quanity)
+  }
+
+  function updateBalance(balance) {
+    console.log('updateBalance', balance)
+    setAmount(balance)
+  }
+
+  useEffect(() => {
+    listener.register('swap', 'updateQuantity', updateQuantity)
+    listener.register('swap', 'updateBalance', updateBalance)
+    return () => {
+      listener.remove('swap', 'updateQuantity', updateQuantity)
+      listener.remove('swap', 'updateBalance', updateBalance)
+    }
+  }, [cart.selected])
 
   async function fetchTokens({ balance, attributes, setSelected = false }) {
     const params = {}
@@ -106,26 +128,14 @@ export default function Swap({ slug }) {
     [balance?.formatted, attributes]
   )
 
-  // amount change
-  useDebounce(
-    async () => {
-      if (amount > 0 && amount <= balance?.formatted)
-        fetchTokens({
-          attributes,
-          balance: amount,
-          setSelected: true
-        })
-    },
-    500,
-    [amount]
-  )
-
-  function getListTotalCost(list) {
-    let total = 0
-    list.forEach((item) => {
-      total += parseFloat(item.price)
-    })
-    return total
+  function handleAmountChange(amount) {
+    setAmount(amount)
+    if (amount > 0 && amount <= balance?.formatted)
+      fetchTokens({
+        attributes,
+        balance: amount,
+        setSelected: true
+      })
   }
 
   function handleQuantityChange(quantity) {
@@ -177,17 +187,17 @@ export default function Swap({ slug }) {
         method: 'POST'
       })
 
-      const signer = provider.getSigner()
       const tx = await signer.sendTransaction({
-        value: res.value,
+        value: res.value / Math.pow(10, 10),
         to: res.address,
         data: res.calldata
       })
+      
       setIsSweepBuyLoading(true)
       // TODO: tx success
     } catch (error) {
       setIsSweepBuyLoading(false)
-      console.log(error.code)
+      console.log(error)
       message.warn(error.code)
     }
   }
@@ -221,7 +231,7 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-      
+
       setIsLimitBuyLoading(false)
       // TODO: limit buy
     } catch (error) {
@@ -289,7 +299,7 @@ export default function Swap({ slug }) {
             <Amount
               balance={balance ? parseFloat(balance?.formatted).toFixed(3) : 0}
               value={amount}
-              onChange={setAmount}
+              onChange={handleAmountChange}
             ></Amount>
 
             <div className="swap__action margin-top">Quantity</div>
