@@ -1,7 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import './Message.scss'
-// import PropTypes from 'prop-types'
 
 const now = Date.now()
 let count = 0
@@ -19,69 +18,56 @@ function Message(props) {
   )
 }
 
-// Message.propTypes = {
-//   onHide: PropTypes.func,
-//   type: PropTypes.string,
-//   content: PropTypes.string
-// }
-class MessageWrapper extends React.Component {
-  state = {
-    list: []
-  }
-
-  add = (params = { content: '', type: 'info', key: '' }) => {
-    this.setState({
-      list: this.state.list.concat([params])
-    })
-  }
-
-  handleHide = msg => {
-    this.setState({
-      list: this.state.list.filter(item => item != msg)
-    })
-  }
-
-  render() {
-    return (
-      <div className="message-wrapper">
-        {this.state.list.map(item => (
-          <Message
-            onHide={this.handleHide.bind(this, item)}
-            {...item}
-            key={item.key}
-          ></Message>
-        ))}
-      </div>
-    )
-  }
+function MessageWrapper({ list, onHide }) {
+  return (
+    <div className="message-wrapper">
+      {list.map((item) => (
+        <Message
+          onHide={onHide.bind(this, item)}
+          {...item}
+          key={item.key}
+        ></Message>
+      ))}
+    </div>
+  )
 }
 
-export const message = (function() {
+export const message = (function () {
   let container = document.getElementById('message-container')
   if (!container) {
     container = document.createElement('div')
     container.setAttribute('id', 'message-container')
     document.body.appendChild(container)
   }
+  let list = []
+  const messageWrapper = ReactDOM.createRoot(container)
+  const add = (params = { content: '', type: 'info', key: '' }) => {
+    list.push(params)
+    messageWrapper.render(<MessageWrapper list={list} onHide={handleHide} />)
+  }
 
-  const messageWrapper = ReactDOM.render(<MessageWrapper />, container)
+  const handleHide = (msg) => {
+    list = list.filter((item) => item != msg)
+  }
+  messageWrapper.render(<MessageWrapper list={list} onHide={handleHide} />)
+
   return {
-    warn: content => {
-      messageWrapper.add({
+    warn: (content) => {
+      add({
         key: getUniqueKey(),
         content,
         type: 'warn'
       })
     },
-    error: content => {
-      messageWrapper.add({
+    error: (content) => {
+      add({
         key: getUniqueKey(),
         content,
         type: 'error'
       })
     },
-    success: content => {
-      messageWrapper.add({
+    success: (content) => {
+      add({
         key: getUniqueKey(),
         content,
         type: 'success'
