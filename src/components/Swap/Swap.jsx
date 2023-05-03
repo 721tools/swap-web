@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { getNetwork } from '@wagmi/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useDebounce } from 'react-use'
 import { useAccount, useBalance } from 'wagmi'
@@ -20,6 +21,7 @@ import { showProcess } from '../../reducers/processSlice'
 import { allowance, approve } from '../../common/weth'
 import { useSigner } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
+import config from '../../config/default'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
@@ -36,7 +38,7 @@ export default function Swap({ slug }) {
   const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
   const [isLimitBuyLoading, setIsLimitBuyLoading] = useState(false)
   const { address } = useAccount()
-  
+
   const {
     data: balance,
     isBalanceError,
@@ -45,7 +47,7 @@ export default function Swap({ slug }) {
     address,
     watch: true
   })
-  
+
   const { data: signer, isError, isLoading } = useSigner()
 
   function parseTraits(attributes) {
@@ -191,7 +193,7 @@ export default function Swap({ slug }) {
         to: res.address,
         data: res.calldata
       })
-      
+
       setIsSweepBuyLoading(true)
       // TODO: tx success
     } catch (error) {
@@ -214,7 +216,6 @@ export default function Swap({ slug }) {
 
     try {
       const _allowance = await allowance(address)
-
       if (_allowance < limitPrice * limitQuantity) {
         await approve(1)
       }
@@ -231,9 +232,56 @@ export default function Swap({ slug }) {
         method: 'POST'
       })
 
+      const { chain } = getNetwork()
+      const domain = {
+        name: 'Limit Order',
+        verifyingContract: config[chain.network]['kiwiContractAddress']
+      }
+
+      const types = {
+        BigNumber: [
+          { name: 'type', type: 'string' },
+          { name: 'hex', type: 'string' }
+        ],
+
+        Order: [
+          { name: 'offerer', type: 'address' },
+          { name: 'collection', type: 'address' },
+          { name: 'nonce', type: 'int' },
+          { name: 'token', type: 'address' },
+          { name: 'amount', type: 'int' },
+          { name: 'price', type: 'BigNumber' },
+          { name: 'expiresAt', type: 'int' },
+          { name: 'tokenIds', type: 'int[]' },
+          { name: 'salt', type: 'string' }
+        ]
+      }
+
+      const signature = await signer._signTypedData(
+        domain,
+        types,
+        limitBuyParams
+      )
+      
+      const setOrder = await request({
+        path: `/api/orders`,
+        data: {
+          slug: slug,
+          amount: limitQuantity,
+          price: limitPrice,
+          expiration: limitExpire,
+          traits: parseTraits(attributes),
+          nonce: limitBuyParams.nonce,
+          salt: limitBuyParams.salt,
+          tokenIds: limitBuyParams.tokenIds,
+          signature
+        },
+        method: 'POST'
+      })
       setIsLimitBuyLoading(false)
       // TODO: limit buy
     } catch (error) {
+      console.log(error)
       setIsLimitBuyLoading(false)
       message.error(error.error)
     }
