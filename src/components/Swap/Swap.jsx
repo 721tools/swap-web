@@ -234,23 +234,20 @@ export default function Swap({ slug }) {
 
       const { chain } = getNetwork()
       const domain = {
+        chainId: config[chain.network]['chainId'],
         name: 'Limit Order',
-        verifyingContract: config[chain.network]['kiwiContractAddress']
+        verifyingContract: config[chain.network]['kiwiContractAddress'],
+        version: '1',
       }
 
       const types = {
-        BigNumber: [
-          { name: 'type', type: 'string' },
-          { name: 'hex', type: 'string' }
-        ],
-
         Order: [
           { name: 'offerer', type: 'address' },
           { name: 'collection', type: 'address' },
           { name: 'nonce', type: 'uint256' },
           { name: 'token', type: 'address' },
           { name: 'amount', type: 'uint256' },
-          { name: 'price', type: 'BigNumber' },
+          { name: 'price', type: 'uint256' },
           { name: 'expiresAt', type: 'uint256' },
           { name: 'tokenIds', type: 'uint256[]' },
           { name: 'salt', type: 'string' }
@@ -262,7 +259,7 @@ export default function Swap({ slug }) {
         types,
         limitBuyParams
       )
-      
+
       const setOrder = await request({
         path: `/api/orders`,
         data: {
