@@ -247,12 +247,12 @@ export default function Swap({ slug }) {
         Order: [
           { name: 'offerer', type: 'address' },
           { name: 'collection', type: 'address' },
-          { name: 'nonce', type: 'int' },
+          { name: 'nonce', type: 'uint256' },
           { name: 'token', type: 'address' },
-          { name: 'amount', type: 'int' },
+          { name: 'amount', type: 'uint256' },
           { name: 'price', type: 'BigNumber' },
-          { name: 'expiresAt', type: 'int' },
-          { name: 'tokenIds', type: 'int[]' },
+          { name: 'expiresAt', type: 'uint256' },
+          { name: 'tokenIds', type: 'uint256[]' },
           { name: 'salt', type: 'string' }
         ]
       }
