@@ -237,7 +237,7 @@ export default function Swap({ slug }) {
         chainId: config[chain.network]['chainId'],
         name: 'Limit Order',
         verifyingContract: config[chain.network]['kiwiContractAddress'],
-        version: '1',
+        version: '1'
       }
 
       const types = {
@@ -275,6 +275,10 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
+
+      listener.fire('swap', 'orders')
+      message.success('Set limit order success!')
+
       setIsLimitBuyLoading(false)
       // TODO: limit buy
     } catch (error) {
