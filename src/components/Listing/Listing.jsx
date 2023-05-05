@@ -47,7 +47,7 @@ function ListingItem({ sale, info }) {
         {timeFromNow(info.event_timestamp)}
       </div>
       <div className="listing-item__picture">
-        <img src={info?.image_url}></img>
+        <img src={info?.image_url || info?.image}></img>
       </div>
       <div
         className={classNames('listing-item__price', {
