@@ -24,14 +24,22 @@ function ListingItem({ sale, info }) {
     if (includeCollectionItem(cart.selected, info)) {
       dispatch(removeCartSelected(info))
       listener.fire('swap', 'updateQuantity', cart.selected.length - 1)
-      listener.fire('swap', 'updateBalance', getListTotalCost(cart.selected) - info.price)
+      listener.fire(
+        'swap',
+        'updateBalance',
+        getListTotalCost(cart.selected) - info.price
+      )
       return
     }
     const res = addCartSelected(info)
 
     dispatch(addCartSelected(info))
     listener.fire('swap', 'updateQuantity', cart.selected.length + 1)
-    listener.fire('swap', 'updateBalance', getListTotalCost(cart.selected.concat([info])))
+    listener.fire(
+      'swap',
+      'updateBalance',
+      getListTotalCost(cart.selected.concat([info]))
+    )
   }
   return (
     <div className="listing-item">
@@ -84,9 +92,10 @@ export default function Listing({ slug }) {
   async function fetchSales() {
     try {
       const res = await request({
-        path: `/api/collections/${slug}/events`,
+        path: `/api/collections/${slug}/sales`,
         data: {
-          event_types: ['AUCTION_SUCCESSFUL'],
+          limit: 20,
+          skip_flagged: false,
           occurred_after: 0
         },
         method: 'POST'

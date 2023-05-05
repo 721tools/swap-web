@@ -19,7 +19,7 @@ import './Swap.scss'
 import { message } from '../Message/Message'
 import { showProcess } from '../../reducers/processSlice'
 import { allowance, approve } from '../../common/weth'
-import { useSigner } from 'wagmi'
+import { useSigner, useNetwork, useSwitchNetwork } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
 import config from '../../config/default'
 
@@ -38,6 +38,8 @@ export default function Swap({ slug }) {
   const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
   const [isLimitBuyLoading, setIsLimitBuyLoading] = useState(false)
   const { address } = useAccount()
+  const { chain } = useNetwork()
+  const { chains, error, pendingChainId, switchNetwork } = useSwitchNetwork()
 
   const {
     data: balance,
@@ -160,6 +162,10 @@ export default function Swap({ slug }) {
 
   function handleFocusSearch() {
     listener.fire('search', 'focus')
+  }
+
+  function handleSwitchNetwork() {
+    switchNetwork(5)
   }
 
   async function handleSweepBuy() {
@@ -363,15 +369,28 @@ export default function Swap({ slug }) {
               list={cart.selected}
             ></CollectionItems>
 
-            <div
-              className={classNames('swap__button', {
-                disabled: cart.selected.length === 0
-              })}
-              onClick={handleSweepBuy}
-            >
-              {isSweepBuyLoading && <Loading color="white"></Loading>}
-              Sweep Buy
-            </div>
+            {chain?.network === 'goerli' && (
+              <div
+                className={classNames('swap__button', {
+                  disabled: cart.selected.length === 0
+                })}
+                onClick={handleSweepBuy}
+              >
+                {isSweepBuyLoading && <Loading color="white"></Loading>}
+                Sweep Buy
+              </div>
+            )}
+
+            {chain?.network !== 'goerli' && (
+              <div
+                className={classNames('swap__button', {
+                  // disabled: !(limitQuantity > 0 && limitPrice > 0)
+                })}
+                onClick={handleSwitchNetwork}
+              >
+                Switch network to Goerli testnet
+              </div>
+            )}
           </div>
         )}
         {cate === 'limit' && (
@@ -394,15 +413,28 @@ export default function Swap({ slug }) {
             <div className="swap__action margin-top">Expire</div>
             <Expire onChange={setLimitExpire}></Expire>
 
-            <div
-              className={classNames('swap__button', {
-                disabled: !(limitQuantity > 0 && limitPrice > 0)
-              })}
-              onClick={limitBuy}
-            >
-              {isLimitBuyLoading && <Loading color="white"></Loading>}
-              Limit Buy
-            </div>
+            {chain?.network === 'goerli' && (
+              <div
+                className={classNames('swap__button', {
+                  disabled: !(limitQuantity > 0 && limitPrice > 0)
+                })}
+                onClick={limitBuy}
+              >
+                {isLimitBuyLoading && <Loading color="white"></Loading>}
+                Limit Buy
+              </div>
+            )}
+
+            {chain?.network !== 'goerli' && (
+              <div
+                className={classNames('swap__button', {
+                  // disabled: !(limitQuantity > 0 && limitPrice > 0)
+                })}
+                onClick={handleSwitchNetwork}
+              >
+                Switch network to Goerli testnet
+              </div>
+            )}
           </div>
         )}
 

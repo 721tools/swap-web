@@ -69,7 +69,7 @@ export default function Collection() {
       </div>
       <Step slug={more.slug}></Step>
       <Listing key={more.slug} slug={more.slug}></Listing>
-      <Ratio></Ratio>
+      <Ratio slug={more.slug}></Ratio>
       <Orders></Orders>
     </div>
   )

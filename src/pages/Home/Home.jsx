@@ -12,7 +12,7 @@ import './Home.scss'
 export default function Home() {
   const { search, process, collection } = useSelector((state) => state)
   const dispatch = useDispatch()
-  console.log(process.show)
+
   const location = useLocation()
   const params = useParams()
   const isCollection = location.pathname.indexOf('/collection/') > -1
