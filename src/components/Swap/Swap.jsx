@@ -4,6 +4,7 @@ import { getNetwork } from '@wagmi/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useDebounce } from 'react-use'
 import { useAccount, useBalance } from 'wagmi'
+import { watchNetwork } from '@wagmi/core'
 import listener from '../../common/listener'
 import { request } from '../../common/request'
 import { setCartAvailable, setCartSelected } from '../../reducers/cartSlice'
@@ -40,7 +41,6 @@ export default function Swap({ slug }) {
   const { address } = useAccount()
   const { chain } = useNetwork()
   const { chains, error, pendingChainId, switchNetwork } = useSwitchNetwork()
-
   const {
     data: balance,
     isBalanceError,
@@ -66,6 +66,18 @@ export default function Swap({ slug }) {
     })
     return res
   }
+
+  useEffect(() => {
+    const unwatch = watchNetwork((network) => {
+      if (!network?.chain) {
+        location.reload()
+      }
+    })
+
+    return () => {
+      unwatch()
+    }
+  }, [])
 
   useEffect(() => {
     async function fetchCollectionInfo() {
