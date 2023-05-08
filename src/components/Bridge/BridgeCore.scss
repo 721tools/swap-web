@@ -1,0 +1,104 @@
+@import '../../scss/default.scss';
+.bridge-core {
+  width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+  background-color: $color-black-bg-light;
+  border-radius: 30px;
+  padding-bottom: 20px;
+  &__title {
+    text-align: center;
+    padding: 20px 30px;
+  }
+  &__con {
+    display: flex;
+    &__inner {
+      flex: 1;
+      margin: 10px 30px;
+      background: #1b212c;
+      padding: 30px;
+      border-radius: 10px;
+    }
+    &__title {
+      text-align: center;
+    }
+    &__chain {
+      margin-left: 10px;
+      color: $color-text-highlight;
+    }
+    &__label {
+      margin-top: 10px;
+    }
+    &__input {
+      height: 44px;
+      line-height: 44px;
+      display: flex;
+      background-color: $color-black-bg-light;
+      border-radius: 10px;
+      margin-top: 10px;
+      input {
+        flex: 1;
+        padding: 0 10px;
+        color: $color-text-highlight;
+        background-color: transparent;
+      }
+      &.warn {
+        input {
+          color: #ff3333;
+        }
+      }
+    }
+    &__collection {
+      margin: 0 50px;
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    &__pic {
+      height: 200px;
+      background-color: $color-black-bg-light;
+    }
+    &__name {
+      background-color: $color-text-highlight;
+      // height: 50px;
+      padding: 10px;
+      &.empty {
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 100px;
+          height: 16px;
+          background-color: $color-text;
+          vertical-align: middle;
+          opacity: 0.2;
+        }
+        &::after {
+          content: '';
+          display: inline-block;
+          width: 150px;
+          height: 16px;
+          background-color: $color-text;
+          vertical-align: middle;
+          opacity: 0.2;
+        }
+      }
+    }
+  }
+  &__button {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    background-color: $color-blue;
+    margin: 0 30px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    color: #fff;
+
+    &.disabled {
+      background-color: $color-black-bg-light;
+    }
+  }
+}

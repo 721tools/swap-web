@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import { useBalance, useEnsName } from 'wagmi'
 import { useWallet } from '../../hooks/useWallet'
 import displayAddress from '../../utils/displayAdddress'
@@ -31,11 +32,12 @@ export default function Header() {
       <div className="header__left">
         <div className="header__logo"></div>
         <span className="header__title">Kiwiswap</span>
-
-        {/* <a href="" className="header__link">
-          Collections
-        </a>
-        <a className="header__link">portfolios</a> */}
+        <NavLink className="header__link" to={'/'}>
+          Swap
+        </NavLink>
+        <NavLink className="header__link" to={'/bridge'}>
+          Bridge
+        </NavLink>
       </div>
       <div className="header__right">
         {isConnected && (
