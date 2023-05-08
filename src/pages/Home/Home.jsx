@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useMatch, useParams, useRoutes } from 'react-router-dom'
 import Collection from '../../components/Collection/Collection'
@@ -7,6 +8,7 @@ import Process from '../../components/Process/Process'
 import SearchResult from '../../components/SearchResult/SearchResult'
 import Swap from '../../components/Swap/Swap'
 import { hideProcess } from '../../reducers/processSlice'
+import { clearCollection } from '../../reducers/collectionSlice'
 import './Home.scss'
 
 export default function Home() {
@@ -16,6 +18,11 @@ export default function Home() {
   const location = useLocation()
   const params = useParams()
   const isCollection = location.pathname.indexOf('/collection/') > -1
+  useEffect(() => {
+    if (!isCollection) {
+      dispatch(clearCollection())
+    }
+  }, [isCollection])
   return (
     <div
       className={classNames('home', {
