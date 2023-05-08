@@ -7,7 +7,7 @@ export default function BridgeCore() {
         <div className="bridge-core__con__inner">
           <div className="bridge-core__con__title">
             From
-            <span className="bridge-core__con__chain">Polygon</span>
+            <span className="bridge-core__con__chain">L2</span>
           </div>
           <div className="bridge-core__con__label">Contract Address</div>
           <div className="bridge-core__con__input">
