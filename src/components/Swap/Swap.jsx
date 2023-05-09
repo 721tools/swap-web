@@ -23,6 +23,7 @@ import { allowance, approve } from '../../common/weth'
 import { useSigner, useNetwork, useSwitchNetwork } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
 import config from '../../config/default'
+import { ethers } from 'ethers'
 
 export default function Swap({ slug }) {
   const dispatch = useDispatch()
@@ -205,10 +206,15 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
+      const gasLimit = await signer.estimateGas({
+        value: res.value,
+        to: res.address,
+      });
 
       const tx = await signer.sendTransaction({
-        value: res.value / Math.pow(10, 10),
+        value: res.value,
         to: res.address,
+        gasLimit: gasLimit.mul(ethers.BigNumber.from("12")).div(ethers.BigNumber.from("10")),
         data: res.calldata
       })
 
