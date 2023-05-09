@@ -218,7 +218,7 @@ export default function Swap({ slug }) {
         data: res.calldata
       })
 
-      setIsSweepBuyLoading(true)
+      setIsSweepBuyLoading(false)
       // TODO: tx success
     } catch (error) {
       setIsSweepBuyLoading(false)
