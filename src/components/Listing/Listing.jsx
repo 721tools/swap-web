@@ -41,6 +41,7 @@ function ListingItem({ sale, info }) {
       getListTotalCost(cart.selected.concat([info]))
     )
   }
+  console.log(info.event_timestamp, new Date(info.event_timestamp), sale)
   return (
     <div className="listing-item">
       <div className="listing-item__time">
@@ -76,7 +77,7 @@ export default function Listing({ slug }) {
   async function fetchList() {
     try {
       const res = await request({
-        path: `/api/collections/${slug}/events`,
+        path: `/api/collections/${slug}/listings`,
         data: {
           event_types: ['AUCTION_CREATED'],
           // occurred_after: Date.now() - 24 * 60 * 60 * 1000
