@@ -1,4 +1,4 @@
-import BridgeCore from '../../components/Bridge/BridgeCore'
+import BridgeCore from '../../components/BridgeCore/BridgeCore'
 import Header from '../../components/Header/Header'
 
 export default function Bridge() {
