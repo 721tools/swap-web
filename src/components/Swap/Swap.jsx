@@ -224,9 +224,12 @@ export default function Swap({ slug }) {
         to: res.address,
         data: res.calldata
       })
-
+      
+      await tx.wait()
+      dispatch(setCartSelected([]))
+      setAmount(0)
       setIsSweepBuyLoading(false)
-      // TODO: tx success
+      message.success('Success')
     } catch (error) {
       setIsSweepBuyLoading(false)
       console.log(error)
