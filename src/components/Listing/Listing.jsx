@@ -41,7 +41,7 @@ function ListingItem({ sale, info }) {
       getListTotalCost(cart.selected.concat([info]))
     )
   }
-  console.log(info.event_timestamp, new Date(info.event_timestamp), sale)
+
   return (
     <div className="listing-item">
       <div className="listing-item__time">

@@ -14,22 +14,6 @@ import Area from '../Area/Area'
 // const POPULAR_LIST_STORAGE_KEY = 'POPULAR_LIST_STORAGE_KEY'
 
 function Item({ info, onClick }) {
-  const [detail, setDetail] = useState({})
-  const chartRef = useRef()
-
-  useEffect(() => {
-    async function fetchCollectionInfo() {
-      try {
-        const res = await request({
-          path: `/api/collections/${info.slug}`,
-          uesSessionStorage: true
-        })
-        setDetail(res)
-      } catch (e) {}
-    }
-    info.slug && fetchCollectionInfo()
-  }, [])
-
   return (
     <div onClick={onClick} className="search-result__item">
       <div className="search-result__inner">
@@ -38,9 +22,9 @@ function Item({ info, onClick }) {
         </div>
         <div className="search-result__title">{info.name}</div>
         <div className="search-result__price">{info.floor_price}</div>
-        <div className="search-result__trend">+43%</div>
+        <div className="search-result__trend">{info.one_day_price_change}%</div>
         <div className="search-result__chart">
-          <Area></Area>
+          <Area data={info.sevenday_prices}></Area>
         </div>
       </div>
     </div>
@@ -61,7 +45,8 @@ export default function SearchResult() {
       const params = {
         order_by: 'one_day_volume',
         page: 1,
-        limit: 10
+        limit: 10,
+        include_sevenday_prices: true
       }
       const res = await request({
         path: '/api/collections',
@@ -70,6 +55,7 @@ export default function SearchResult() {
       })
 
       setPopularList(res.collections)
+      console.log(res.collections)
       return res.collections
     } catch (e) {}
   }

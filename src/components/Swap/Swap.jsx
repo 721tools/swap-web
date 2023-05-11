@@ -206,15 +206,22 @@ export default function Swap({ slug }) {
         },
         method: 'POST'
       })
-      const gasLimit = await signer.estimateGas({
-        value: res.value,
-        to: res.address,
-      });
+      // const gasLimit = await signer.estimateGas({
+      //   value: res.value,
+      //   to: res.address,
+      // });
 
+      // const tx = await signer.sendTransaction({
+      //   value: res.value,
+      //   to: res.address,
+      //   gasLimit: gasLimit.mul(ethers.BigNumber.from("12")).div(ethers.BigNumber.from("10")),
+      //   data: res.calldata
+      // })
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
       const tx = await signer.sendTransaction({
         value: res.value,
         to: res.address,
-        gasLimit: gasLimit.mul(ethers.BigNumber.from("12")).div(ethers.BigNumber.from("10")),
         data: res.calldata
       })
 

@@ -8,6 +8,10 @@ const config = {
     chainId: 1,
     kiwiContractAddress: '',
     wETHContractAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+  },
+  polygonMumbai: {
+    chainId: 80001,
+    bridgeContractAddress: '0xcf14d6d83146a76779d27e9b2a579c59c50138d5'
   }
 }
 export default config
