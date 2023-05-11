@@ -225,7 +225,8 @@ export default function Swap({ slug }) {
         data: res.calldata
       })
       
-      await tx.wait()
+      const receipt = await tx.wait()
+      console.log(receipt)
       dispatch(setCartSelected([]))
       setAmount(0)
       setIsSweepBuyLoading(false)
