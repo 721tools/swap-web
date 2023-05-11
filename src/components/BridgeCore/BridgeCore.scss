@@ -19,6 +19,12 @@
       padding: 30px;
       border-radius: 10px;
     }
+    &__arrow {
+      @include icon(24px, 'arrow-white.png');
+      transform: rotate(-90deg);
+      margin-top: 140px;
+      cursor: pointer;
+    }
     &__title {
       text-align: center;
     }
@@ -57,6 +63,10 @@
     &__pic {
       height: 200px;
       background-color: $color-black-bg-light;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
     }
     &__name {
       background-color: $color-text-highlight;

@@ -14,6 +14,7 @@ function App() {
       <RainbowKitProvider chains={chains}>
         <BrowserRouter>
           <Routes>
+            <Route path="/bridge/:slug" element={<Bridge></Bridge>}></Route>
             <Route path="/bridge" element={<Bridge></Bridge>}></Route>
             <Route path="/collection/:slug" element={<Home></Home>}></Route>
             <Route path="/" element={<Home></Home>}></Route>

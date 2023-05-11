@@ -31,7 +31,7 @@ function Item({ info, onClick }) {
   )
 }
 
-export default function SearchResult() {
+export default function SearchResult({ from = 'collection' }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [recentList, setRecentList] = useState([])
@@ -71,7 +71,7 @@ export default function SearchResult() {
   function handleSelectCollection(info) {
     // dispatch(setCollection(info))
     dispatch(toggleSearch(false))
-    navigate(`/collection/${info.slug}`)
+    navigate(`/${from}/${info.slug}`)
   }
 
   useDebounce(
