@@ -117,7 +117,9 @@ export default function BridgeCore({ slug }) {
         tokenId,
         address,
         {
-          value: ethers.utils.parseEther('0.1')
+          value: ethers.utils.parseEther(
+            targetFun === 'transferFromL1toL2' ? '0.1' : '10'
+          )
         }
       )
       const transferReciept = await transfer.wait()
