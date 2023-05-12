@@ -39,7 +39,7 @@ export default function BridgeCore({ slug }) {
       bridgeContract: '0x7405fa3a6f82c094e1bc36303a1a660e02ce76b6'
     }
   })
-  
+
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: config[chain?.network]?.wETHContractAddress,
     abi: wethAbi,
@@ -115,16 +115,19 @@ export default function BridgeCore({ slug }) {
       const transfer = await bridgeContract[targetFun](
         contractAddress,
         tokenId,
-        contractAddress
+        address,
+        {
+          value: ethers.utils.parseEther('0.1')
+        }
       )
       const transferReciept = await transfer.wait()
-      
+
       message.success('Transfer success')
       setIsTransfering(false)
     } catch (e) {
       console.log(e)
       setIsTransfering(false)
-      message.error( e.reason || e.message)
+      message.error(e.reason || e.message)
     }
   }
 
