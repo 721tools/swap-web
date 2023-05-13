@@ -29,7 +29,7 @@ export default function BridgeCore({ slug }) {
   const { chains, error, pendingChainId, switchNetwork } = useSwitchNetwork()
   const [destination, setDestination] = useState({
     to: {
-      name: 'L2',
+      name: 'Polygon Mumbai',
       chainId: 80001,
       bridgeContract: '0xcf14d6d83146a76779d27e9b2a579c59c50138d5'
     },
@@ -124,7 +124,7 @@ export default function BridgeCore({ slug }) {
       )
       const transferReciept = await transfer.wait()
 
-      message.success('Transfer success')
+      message.success('The cross-chain process will take 10-20 minutes!')
       setIsTransfering(false)
     } catch (e) {
       console.log(e)
@@ -204,7 +204,7 @@ export default function BridgeCore({ slug }) {
       )}
       {!isNetworkMatch && (
         <div className="bridge-core__button" onClick={handleSwitchNetwork}>
-          Switch Network
+          Switch network to {destination.from.name}
         </div>
       )}
     </div>
