@@ -18,7 +18,7 @@ $index-pop: 101;
   display: inline-block;
   vertical-align: middle;
   background-size: $width;
-  background-image: url(../../src/assets/icons/#{$name});
+  background-image: url(../../assets/icons/#{$name});
 }
 
 @mixin button($width, $height) {
