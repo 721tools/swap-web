@@ -1,6 +1,6 @@
 import jsonToQuery from '../utils/jsonToQuery'
 
-const SERVER = 'https://dev.721tools.xyz'
+const SERVER = ''
 
 export async function request({
   path,
