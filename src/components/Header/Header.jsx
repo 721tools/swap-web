@@ -43,7 +43,7 @@ export default function Header() {
         {isConnected && (
           <div className="header__balance">
             <span className="header__icon"></span>
-            {balance && parseFloat(balance.formatted).toFixed(3)}E
+            {balance && parseFloat(balance.formatted).toFixed(3)}
             <div className="header__address">
               {ens || displayAddress(address)}
             </div>
