@@ -84,6 +84,22 @@ export default function BridgeCore({ slug }) {
     // write({ args: [] })
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      const bridgeContract = new ethers.Contract(
+        destination.from.bridgeContract,
+        bridgeAbi,
+        provider.getSigner()
+      )
+
+      const checkFun =
+        destination.from.chainId === 5 ? 'getPairFromL1' : 'getPairFromL2'
+
+      const isPaired = await bridgeContract[checkFun](contractAddress)
+      console.log(isPaired, 'isPaired')
+      if (isPaired === '0x0000000000000000000000000000000000000000') {
+        setIsTransfering(false)
+        return message.warn('This contract is not in whitelist')
+      }
       const nftContract = new ethers.Contract(
         contractAddress,
         nftAbi,
@@ -103,11 +119,6 @@ export default function BridgeCore({ slug }) {
         const reciept = await approveToBridge.wait()
       }
 
-      const bridgeContract = new ethers.Contract(
-        destination.from.bridgeContract,
-        bridgeAbi,
-        provider.getSigner()
-      )
       const targetFun =
         destination.from.chainId === 5
           ? 'transferFromL1toL2'
@@ -118,7 +129,7 @@ export default function BridgeCore({ slug }) {
         address,
         {
           value: ethers.utils.parseEther(
-            targetFun === 'transferFromL1toL2' ? '0.1' : '10'
+            targetFun === 'transferFromL1toL2' ? '0.1' : '5'
           )
         }
       )

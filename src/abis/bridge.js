@@ -20,6 +20,20 @@ const bridgeAbi = [
     outputs: [],
     stateMutability: 'payable',
     type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'getPairFromL1',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'getPairFromL2',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
   }
 ]
 export default bridgeAbi
