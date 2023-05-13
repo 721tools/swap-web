@@ -9,6 +9,7 @@ import Close from '../Close/Close'
 import { toggleSearch } from '../../reducers/searchSlice'
 import Loading from '../Loading/Loading'
 import { setCollection } from '../../reducers/collectionSlice'
+import { clearCart } from '../../reducers/cartSlice'
 import Area from '../Area/Area'
 
 // const POPULAR_LIST_STORAGE_KEY = 'POPULAR_LIST_STORAGE_KEY'
@@ -55,7 +56,6 @@ export default function SearchResult({ from = 'collection' }) {
       })
 
       setPopularList(res.collections)
-      console.log(res.collections)
       return res.collections
     } catch (e) {}
   }
@@ -69,8 +69,8 @@ export default function SearchResult({ from = 'collection' }) {
   }
 
   function handleSelectCollection(info) {
-    // dispatch(setCollection(info))
     dispatch(toggleSearch(false))
+    dispatch(clearCart())
     navigate(`/${from}/${info.slug}`)
   }
 

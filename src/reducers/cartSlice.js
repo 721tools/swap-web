@@ -24,6 +24,8 @@ export const cartSlice = createSlice({
     },
     clearCart: (state, action) => {
       state.items = []
+      state.available = []
+      state.selected = []
     }
   }
 })
