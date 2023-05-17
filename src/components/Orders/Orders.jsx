@@ -18,7 +18,7 @@ function OrdersItem({ info }) {
         <img src="https://cdn.x2y2.io/nfts/ezpvihz8v0jobkt.png/720.png"></img>
         <div className="orders-item__quantity">5</div> */}
         <div className="orders-item__info">
-          <div className="orders-item__id">#333</div>
+          {/* <div className="orders-item__id">#333</div> */}
           <div className="orders-item__name">{info.slug}</div>
         </div>
       </div>
@@ -39,11 +39,11 @@ function OrdersItem({ info }) {
   )
 }
 
-export default function Orders() {
+export default function Orders({ slug }) {
   const [list, setList] = useState([])
   async function fetchOrders() {
     const res = await request({
-      path: '/api/orders',
+      path: `/api/orders?slug=${slug}`,
       data: {},
       method: 'GET'
     })
