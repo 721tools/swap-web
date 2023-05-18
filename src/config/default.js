@@ -1,7 +1,7 @@
 const config = {
   goerli: {
     chainId: 5,
-    kiwiContractAddress: '0x41e81aC34E5C36505E624819a94C231889Cfe989',
+    kiwiContractAddress: '0xc0783170717106b54b895edfe9e42b1c153f5cba',
     wETHContractAddress: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6'
   },
   main: {
