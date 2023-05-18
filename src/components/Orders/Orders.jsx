@@ -122,9 +122,12 @@ export default function Orders({ slug }) {
     fetchOrders(orderType, isCurrentSelected)
   }, [])
   useEffect(() => {
-    listener.register('swap', 'orders', fetchOrders)
+    function _fetchOrders() {
+      fetchOrders(orderType, isCurrentSelected)
+    }
+    listener.register('swap', 'orders', _fetchOrders)
     return () => {
-      listener.remove('swap', 'orders', fetchOrders)
+      listener.remove('swap', 'orders', _fetchOrders)
     }
   }, [])
   return (
