@@ -116,4 +116,35 @@
       background-color: $color-black-bg-light;
     }
   }
+  &__bridge {
+    line-height: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    user-select: none;
+    &.disable {
+      cursor: not-allowed;
+    }
+    &__select {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 16px;
+      background-color: #42454a;
+      vertical-align: middle;
+      margin-right: 10px;
+      &.selected {
+        text-align: center;
+        &::before {
+          content: '';
+          width: 8px;
+          height: 8px;
+          background-color: #6447f2;
+          border-radius: 8px;
+          display: inline-block;
+          vertical-align: middle;
+          margin-top: -4px;
+        }
+      }
+    }
+  }
 }

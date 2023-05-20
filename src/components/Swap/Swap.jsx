@@ -24,8 +24,11 @@ import { useSigner, useNetwork, useSwitchNetwork } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
 import config from '../../config/default'
 import { ethers } from 'ethers'
+import bridgeAbi from '../../abis/bridge'
 
 export default function Swap({ slug }) {
+  const GOERLI_BRIDGE_CONTRACT_ADDRESS =
+    '0x7405fa3a6f82c094e1bc36303a1a660e02ce76b6'
   const dispatch = useDispatch()
   const [showAttributes, setShowAttributes] = useState(false)
   const { more } = useSelector((state) => state.collection)
@@ -39,6 +42,8 @@ export default function Swap({ slug }) {
   const [limitExpire, setLimitExpire] = useState(0)
   const [isSweepBuyLoading, setIsSweepBuyLoading] = useState(false)
   const [isLimitBuyLoading, setIsLimitBuyLoading] = useState(false)
+  const [isBridge, setIsBridge] = useState(false)
+  const [isBridgeAble, setIsBridgeAble] = useState(false)
   const { address } = useAccount()
   const { chain } = useNetwork()
   const { chains, error, pendingChainId, switchNetwork } = useSwitchNetwork()
@@ -87,6 +92,7 @@ export default function Swap({ slug }) {
         uesSessionStorage: true
       })
       dispatch(setMoreInfo(res))
+      checkBridge(res.contract)
     }
     slug && fetchCollectionInfo()
   }, [slug])
@@ -98,6 +104,31 @@ export default function Swap({ slug }) {
   function updateBalance(balance) {
     console.log('updateBalance', balance)
     setAmount(balance)
+  }
+
+  async function checkBridge(contractAddress) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+    const bridgeContract = new ethers.Contract(
+      GOERLI_BRIDGE_CONTRACT_ADDRESS,
+      bridgeAbi,
+      provider.getSigner()
+    )
+
+    const isPaired = await bridgeContract['getPairFromL1'](contractAddress)
+    console.log(isPaired)
+    if (isPaired === '0x0000000000000000000000000000000000000000') {
+      return false
+    }
+    setIsBridgeAble(true)
+    return true
+  }
+
+  function handleBridgeSelect() {
+    if (!isBridgeAble) {
+      return
+    }
+    setIsBridge(!isBridge)
   }
 
   useEffect(() => {
@@ -202,7 +233,8 @@ export default function Swap({ slug }) {
               price: item.price,
               platform: item.from
             }
-          })
+          }),
+          cross_chain: isBridge
         },
         method: 'POST'
       })
@@ -222,9 +254,10 @@ export default function Swap({ slug }) {
       const tx = await signer.sendTransaction({
         value: res.value,
         to: res.address,
-        data: res.calldata
+        data: res.calldata,
+        gasLimit: 1000000
       })
-      
+
       const receipt = await tx.wait()
       console.log(receipt)
       dispatch(setCartSelected([]))
@@ -397,7 +430,19 @@ export default function Swap({ slug }) {
               onListChange={handleListChange}
               list={cart.selected}
             ></CollectionItems>
-
+            <div
+              className={classNames('swap__bridge', {
+                disable: !isBridgeAble
+              })}
+              onClick={handleBridgeSelect}
+            >
+              <span
+                className={classNames('swap__bridge__select', {
+                  selected: isBridge
+                })}
+              ></span>
+              Bridge to L2
+            </div>
             {chain?.network === 'goerli' && (
               <div
                 className={classNames('swap__button', {
