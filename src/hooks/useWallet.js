@@ -2,7 +2,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useAccount, useSignMessage } from 'wagmi'
 import { SiweMessage } from 'siwe'
 import { request } from '../common/request'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { login } from '../reducers/userSlice'
 import { useDispatch } from 'react-redux'
 
@@ -28,6 +28,7 @@ export function useWallet({ onSuccess }) {
   const { openConnectModal } = useConnectModal()
   const { address, isConnected } = useAccount()
   const dispatch = useDispatch()
+
   async function _login(signature, message) {
     const res = await request({
       path: '/api/auth/login',
@@ -51,18 +52,27 @@ export function useWallet({ onSuccess }) {
     isConnected && sign()
   }, [isConnected, address])
 
+  async function _sign() {
+    const message = await createSiweMessage(
+      address,
+      'Sign in with Ethereum to the app.'
+    )
+    signMessage({
+      message: message
+    })
+  }
   async function sign() {
     try {
       const meInfo = await request({ path: '/api/auth/me' })
+      if (address !== meInfo.address) {
+        setTimeout(() => {
+          _sign()
+        }, 500)
+        return
+      }
       dispatch(login(meInfo))
     } catch (e) {
-      const message = await createSiweMessage(
-        address,
-        'Sign in with Ethereum to the app.'
-      )
-      signMessage({
-        message: message
-      })
+      _sign()
     }
   }
 
