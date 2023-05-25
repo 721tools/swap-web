@@ -7,7 +7,7 @@ import { useAccount, useBalance } from 'wagmi'
 import { watchNetwork } from '@wagmi/core'
 import listener from '../../common/listener'
 import { request } from '../../common/request'
-import { setCartAvailable, setCartSelected } from '../../reducers/cartSlice'
+import { clearCart, setCartAvailable, setCartSelected } from '../../reducers/cartSlice'
 import { setMoreInfo } from '../../reducers/collectionSlice'
 import Amount from '../Amount/Amount'
 import Attributes, { JOINT_MARK } from '../Attributes/Attributes'
@@ -157,6 +157,7 @@ export default function Swap({ slug }) {
     if (setSelected) {
       dispatch(setCartSelected(res.tokens))
     } else {
+      dispatch(clearCart())
       dispatch(setCartAvailable(res.tokens))
       setQuantity(0)
     }
