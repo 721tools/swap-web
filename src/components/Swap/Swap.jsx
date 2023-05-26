@@ -432,7 +432,7 @@ export default function Swap({ slug }) {
               availableQuantity={cart.available.length}
               value={quantity}
               onChange={handleQuantityChange}
-              onAttributesClick={() => setShowAttributes(true)}
+              onAttributesClick={() => slug && setShowAttributes(true)}
             ></Quantity>
 
             <CollectionItems
@@ -490,7 +490,7 @@ export default function Swap({ slug }) {
               availableQuantity={cart.available.length}
               value={limitQuantity}
               onChange={(quantity) => setLimitQuantity(quantity)}
-              onAttributesClick={() => setShowAttributes(true)}
+              onAttributesClick={() => slug && setShowAttributes(true)}
               slide={false}
             ></Quantity>
             <div className="swap__action margin-top">Expire</div>
