@@ -12,7 +12,7 @@ export default function CollectionItems({ list, onListChange }) {
     <div className="collection-items">
       {list.slice(0, 16).map((item, index) => (
         <div
-          key={`${item.token_id}-${index}`}
+          key={`${item.token_id}`}
           className="collection-items__item"
         >
           <img

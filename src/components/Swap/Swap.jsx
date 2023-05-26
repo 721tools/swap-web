@@ -7,7 +7,11 @@ import { useAccount, useBalance } from 'wagmi'
 import { watchNetwork } from '@wagmi/core'
 import listener from '../../common/listener'
 import { request } from '../../common/request'
-import { clearCart, setCartAvailable, setCartSelected } from '../../reducers/cartSlice'
+import {
+  clearCart,
+  setCartAvailable,
+  setCartSelected
+} from '../../reducers/cartSlice'
 import { setMoreInfo } from '../../reducers/collectionSlice'
 import Amount from '../Amount/Amount'
 import Attributes, { JOINT_MARK } from '../Attributes/Attributes'
@@ -94,7 +98,11 @@ export default function Swap({ slug }) {
       dispatch(setMoreInfo(res))
       checkBridge(res.contract)
     }
-    slug && fetchCollectionInfo()
+    if (slug) {
+      fetchCollectionInfo()
+    } else {
+      dispatch(clearCart())
+    }
   }, [slug])
 
   function updateQuantity(quanity) {

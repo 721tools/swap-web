@@ -70,8 +70,8 @@ function OrdersItem({ info }) {
 }
 
 export default function Orders({ slug }) {
-  const [list, setList] = useState([])
-  const [sweepList, setSweepList] = useState([])
+  const [list, setList] = useState({})
+  const [sweepList, setSweepList] = useState({})
   const [isCurrentSelected, setIsCurrentSelected] = useState(false)
   const orderTypes = [
     {
@@ -85,7 +85,7 @@ export default function Orders({ slug }) {
   ]
   const [orderType, setOrderType] = useState(orderTypes[0])
   const [showDropdown, setShowDropdown] = useState(false)
-  async function fetchOrders(orderType, isCurrentSelected) {
+  async function fetchOrders(orderType, isCurrentSelected, page = 1) {
     try {
       const isLimit = orderType.value === 'limit'
       let fetchPath = isLimit ? `/api/orders` : `/api/orders/sweep`
@@ -94,13 +94,16 @@ export default function Orders({ slug }) {
       }
       const res = await request({
         path: fetchPath,
-        data: {},
+        data: {
+          limit: 5,
+          page
+        },
         method: 'GET'
       })
       if (isLimit) {
-        setList(res.data)
+        setList(res)
       } else {
-        setSweepList(res.data)
+        setSweepList(res)
       }
     } catch (error) {
       console.log(error)
@@ -130,6 +133,8 @@ export default function Orders({ slug }) {
       listener.remove('swap', 'orders', _fetchOrders)
     }
   }, [])
+
+  const orderData = orderType.value === 'limit' ? list : sweepList
   return (
     <div className="orders">
       <div className="orders__header">
@@ -156,16 +161,70 @@ export default function Orders({ slug }) {
       </div>
       <div className="orders__list">
         {orderType.value === 'limit' &&
-          list.map((item) => (
+          list.data?.map((item) => (
             <OrdersItem key={item.id} info={item}></OrdersItem>
           ))}
         {orderType.value === 'sweep' &&
-          sweepList.map((item) => (
+          sweepList.data?.map((item) => (
             <SweepOrdersItem
               key={item.tx_hash + item.token_id}
               info={item}
             ></SweepOrdersItem>
           ))}
+
+        {orderData.total && orderData.total > orderData.limit && (
+          <div className="orders__page">
+            <div
+              className="orders__page__item"
+              onClick={() => {
+                fetchOrders(orderType, isCurrentSelected, 1)
+              }}
+            >
+              First
+            </div>
+            <div
+              className="orders__page__item"
+              onClick={() => {
+                if (orderData.page === 1) {
+                  return
+                }
+                fetchOrders(orderType, isCurrentSelected, orderData.page - 1)
+              }}
+            >
+              <span className="orders__page__prev"></span>
+            </div>
+            <div className="orders__page__item">
+              Page {orderData.page} of{' '}
+              {Math.ceil(orderData.total / orderData.limit)}
+            </div>
+            <div
+              className="orders__page__item"
+              onClick={() => {
+                if (
+                  orderData.page ===
+                  Math.ceil(orderData.total / orderData.limit)
+                ) {
+                  return
+                }
+                fetchOrders(orderType, isCurrentSelected, orderData.page + 1)
+              }}
+            >
+              <span className="orders__page__next"></span>
+            </div>
+            <div
+              className="orders__page__item"
+              onClick={() => {
+                fetchOrders(
+                  orderType,
+                  isCurrentSelected,
+                  Math.ceil(orderData.total / orderData.limit)
+                )
+              }}
+            >
+              Last
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
