@@ -10,11 +10,8 @@ export default function CollectionItems({ list, onListChange }) {
   }
   return (
     <div className="collection-items">
-      {list.slice(0, 16).map((item, index) => (
-        <div
-          key={`${item.token_id}`}
-          className="collection-items__item"
-        >
+      {list.slice(0, list.length > 16 ? 15 : 16).map((item, index) => (
+        <div key={`${item.token_id}`} className="collection-items__item">
           <img
             title={`#${item.token_id}`}
             className="collection-items__img"
@@ -26,6 +23,12 @@ export default function CollectionItems({ list, onListChange }) {
           ></span>
         </div>
       ))}
+
+      {list.length > 16 && (
+        <div className="collection-items__item">
+          <span className="collection-items__more">+{list.length - 15}</span>
+        </div>
+      )}
     </div>
   )
 }

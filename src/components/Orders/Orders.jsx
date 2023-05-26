@@ -175,7 +175,9 @@ export default function Orders({ slug }) {
         {orderData.total && orderData.total > orderData.limit && (
           <div className="orders__page">
             <div
-              className="orders__page__item"
+              className={classNames('orders__page__item', {
+                disable: orderData.page === 1
+              })}
               onClick={() => {
                 fetchOrders(orderType, isCurrentSelected, 1)
               }}
@@ -183,7 +185,9 @@ export default function Orders({ slug }) {
               First
             </div>
             <div
-              className="orders__page__item"
+              className={classNames('orders__page__item', {
+                disable: orderData.page === 1
+              })}
               onClick={() => {
                 if (orderData.page === 1) {
                   return
@@ -193,12 +197,20 @@ export default function Orders({ slug }) {
             >
               <span className="orders__page__prev"></span>
             </div>
-            <div className="orders__page__item">
+            <div
+              className={classNames('orders__page__item', {
+                disable: false
+              })}
+            >
               Page {orderData.page} of{' '}
               {Math.ceil(orderData.total / orderData.limit)}
             </div>
             <div
-              className="orders__page__item"
+              className={classNames('orders__page__item', {
+                disable:
+                  orderData.page ===
+                  Math.ceil(orderData.total / orderData.limit)
+              })}
               onClick={() => {
                 if (
                   orderData.page ===
@@ -212,7 +224,11 @@ export default function Orders({ slug }) {
               <span className="orders__page__next"></span>
             </div>
             <div
-              className="orders__page__item"
+              className={classNames('orders__page__item', {
+                disable:
+                  orderData.page ===
+                  Math.ceil(orderData.total / orderData.limit)
+              })}
               onClick={() => {
                 fetchOrders(
                   orderType,

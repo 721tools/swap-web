@@ -14,6 +14,8 @@
     display: inline-block;
     margin: 7px;
     position: relative;
+    text-align: center;
+    vertical-align: middle;
   }
   &__img {
     width: 32px;
@@ -26,5 +28,13 @@
     right: -7px;
     top: -7px;
     cursor: pointer;
+  }
+  &__more {
+    display: inline-block;
+    line-height: 32px;
+    height: 32px;
+    width: 32px;
+    font-size: 12px;
+    vertical-align: top;
   }
 }
