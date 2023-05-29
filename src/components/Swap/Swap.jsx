@@ -279,9 +279,9 @@ export default function Swap({ slug }) {
         OfferOrder: [
           { name: 'offerer', type: 'address' },
           { name: 'collection', type: 'address' },
-          { name: 'nonce', type: 'uint256' },
+          { name: 'nonce', type: 'uint8' },
           { name: 'token', type: 'address' },
-          { name: 'amount', type: 'uint256' },
+          { name: 'amount', type: 'uint8' },
           { name: 'price', type: 'uint256' },
           { name: 'expiresAt', type: 'uint256' },
           { name: 'tokenIds', type: 'uint256[]' },
