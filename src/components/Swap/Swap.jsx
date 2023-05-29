@@ -224,7 +224,7 @@ export default function Swap({ slug }) {
         to: res.address,
         data: res.calldata
       })
-      
+
       const receipt = await tx.wait()
       console.log(receipt)
       dispatch(setCartSelected([]))
@@ -269,14 +269,14 @@ export default function Swap({ slug }) {
 
       const { chain } = getNetwork()
       const domain = {
+        name: 'J721tools',
+        version: '1',
         chainId: config[chain.network]['chainId'],
-        name: 'Limit Order',
         verifyingContract: config[chain.network]['kiwiContractAddress'],
-        version: '1'
       }
 
       const types = {
-        Order: [
+        OfferOrder: [
           { name: 'offerer', type: 'address' },
           { name: 'collection', type: 'address' },
           { name: 'nonce', type: 'uint256' },
