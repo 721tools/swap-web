@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useMatch, useParams, useRoutes } from 'react-router-dom'
 import Collection from '../../components/Collection/Collection'
 import Header from '../../components/Header/Header'
-import Process from '../../components/Process/Process'
 import SearchResult from '../../components/SearchResult/SearchResult'
 import Swap from '../../components/Swap/Swap'
-import { hideProcess } from '../../reducers/processSlice'
 import { clearCollection } from '../../reducers/collectionSlice'
 import './Home.scss'
 
@@ -35,9 +33,6 @@ export default function Home() {
         <Swap key={params.slug} slug={params.slug}></Swap>
       </div>
       {search.active && <SearchResult></SearchResult>}
-      {/* {process.show && (
-        <Process onClose={() => dispatch(hideProcess())}></Process>
-      )} */}
     </div>
   )
 }

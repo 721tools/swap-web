@@ -22,13 +22,14 @@ import Quantity from '../Quantity/Quantity'
 import Loading from '../Loading/Loading'
 import './Swap.scss'
 import { message } from '../Message/Message'
-import { showProcess } from '../../reducers/processSlice'
+
 import { allowance, approve } from '../../common/weth'
 import { useSigner, useNetwork, useSwitchNetwork } from 'wagmi'
 import getListTotalCost from '../../common/getListTotalCost'
 import config from '../../config/default'
 import { ethers } from 'ethers'
 import bridgeAbi from '../../abis/bridge'
+import SweepConfirm from '../SweepConfirm/SweepConfirm'
 
 export default function Swap({ slug }) {
   const GOERLI_BRIDGE_CONTRACT_ADDRESS =
@@ -50,6 +51,7 @@ export default function Swap({ slug }) {
   const [isBridgeAble, setIsBridgeAble] = useState(false)
   const { address } = useAccount()
   const { chain } = useNetwork()
+  const [showSweepConfirm, setShowSweepConfirm] = useState(false)
   const { chains, error, pendingChainId, switchNetwork } = useSwitchNetwork()
   const {
     data: balance,
@@ -110,7 +112,6 @@ export default function Swap({ slug }) {
   }
 
   function updateBalance(balance) {
-    console.log('updateBalance', balance)
     setAmount(balance)
   }
 
@@ -124,7 +125,7 @@ export default function Swap({ slug }) {
     )
 
     const isPaired = await bridgeContract['getPairFromL1'](contractAddress)
-    console.log(isPaired)
+
     if (isPaired === '0x0000000000000000000000000000000000000000') {
       return false
     }
@@ -221,7 +222,7 @@ export default function Swap({ slug }) {
     switchNetwork(5)
   }
 
-  async function handleSweepBuy() {
+  function checkSweepReady() {
     if (isSweepBuyLoading) return
     if (cart.selected.length === 0) {
       return
@@ -229,6 +230,12 @@ export default function Swap({ slug }) {
     const total = getListTotalCost(cart.selected)
     if (total > balance?.formatted) {
       return message.warn('Insufficient balance')
+    }
+    return true
+  }
+  async function handleSweepBuy() {
+    if (!checkSweepReady()) {
+      return
     }
     setIsSweepBuyLoading(true)
     try {
@@ -258,13 +265,14 @@ export default function Swap({ slug }) {
       //   gasLimit: gasLimit.mul(ethers.BigNumber.from("12")).div(ethers.BigNumber.from("10")),
       //   data: res.calldata
       // })
+
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const tx = await signer.sendTransaction({
         value: res.value,
-        to: res.address,
-        data: res.calldata,
-        gasLimit: 1000000
+        to: res.address.slice(0, 42),
+        data: res.calldata
+        // gasLimit: 1000000
       })
 
       const receipt = await tx.wait()
@@ -457,7 +465,7 @@ export default function Swap({ slug }) {
                 className={classNames('swap__button', {
                   disabled: cart.selected.length === 0
                 })}
-                onClick={handleSweepBuy}
+                onClick={() => checkSweepReady() && setShowSweepConfirm(true)}
               >
                 {isSweepBuyLoading && <Loading color="white"></Loading>}
                 Sweep Buy
@@ -530,6 +538,18 @@ export default function Swap({ slug }) {
           ></Attributes>
         )}
       </div>
+      {showSweepConfirm && (
+        <SweepConfirm
+          onConfirm={handleSweepBuy}
+          onClose={() => setShowSweepConfirm(false)}
+          collectionName={more.name}
+          collectionItems={cart.selected}
+          quantity={quantity}
+          amount={amount}
+          attributes={attributes}
+          isSweepBuyLoading={isSweepBuyLoading}
+        ></SweepConfirm>
+      )}
     </div>
   )
 }
