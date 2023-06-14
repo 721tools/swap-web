@@ -37,7 +37,7 @@ export default function SweepConfirm({
             onClick={() => !isSweepBuyLoading && onConfirm()}
           >
             {isSweepBuyLoading && <Loading color="white"></Loading>}
-            Verify limit order
+            Confirm
           </div>
         </div>
       </div>
