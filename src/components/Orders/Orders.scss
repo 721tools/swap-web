@@ -42,6 +42,12 @@
   &__list {
     min-height: 300px;
   }
+  &__empty {
+    height: 300px;
+    text-align: center;
+    line-height: 300px;
+    user-select: none;
+  }
   &__page {
     text-align: right;
     margin-top: 30px;

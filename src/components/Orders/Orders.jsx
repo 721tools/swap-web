@@ -171,8 +171,14 @@ export default function Orders({ slug }) {
               info={item}
             ></SweepOrdersItem>
           ))}
+        {orderType.value === 'limit' && list.data?.length === 0 && (
+          <div className="orders__empty">Empty</div>
+        )}
+        {orderType.value === 'sweep' && sweepList.data?.length === 0 && (
+          <div className="orders__empty">Empty</div>
+        )}
 
-        {orderData.total && orderData.total > orderData.limit && (
+        {orderData.total > orderData.limit && (
           <div className="orders__page">
             <div
               className={classNames('orders__page__item', {
