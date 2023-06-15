@@ -65,6 +65,10 @@ export function useWallet({ onSuccess }) {
     try {
       const meInfo = await request({ path: '/api/auth/me' })
       if (address !== meInfo.address) {
+        await request({
+          path: '/api/auth/logout',
+          method: 'POST'
+        })
         setTimeout(() => {
           _sign()
         }, 500)
