@@ -319,19 +319,19 @@ export default function Swap({ slug }) {
 
       const { chain } = getNetwork()
       const domain = {
+        name: 'J721tools',
+        version: '1',
         chainId: config[chain.network]['chainId'],
-        name: 'Limit Order',
         verifyingContract: config[chain.network]['kiwiContractAddress'],
-        version: '1'
       }
 
       const types = {
-        Order: [
+        OfferOrder: [
           { name: 'offerer', type: 'address' },
           { name: 'collection', type: 'address' },
-          { name: 'nonce', type: 'uint256' },
+          { name: 'nonce', type: 'uint8' },
           { name: 'token', type: 'address' },
-          { name: 'amount', type: 'uint256' },
+          { name: 'amount', type: 'uint8' },
           { name: 'price', type: 'uint256' },
           { name: 'expiresAt', type: 'uint256' },
           { name: 'tokenIds', type: 'uint256[]' },
